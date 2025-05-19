@@ -1,0 +1,12 @@
+---
+- name: A simple echo test
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Echo a message
+      ansible.builtin.shell: echo "Hello from AAP 2.4!"
+      register: output
+
+    - name: Show the output
+      ansible.builtin.debug:
+        var: output.stdout
