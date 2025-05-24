@@ -1,6 +1,8 @@
 - name: Configure FortiGate firewall policy
   hosts: fortigate1
   gather_facts: no
+  vars:
+  fortigate_token: "rH3q6bj3hjr53HHyN0ff163Hf8n6pd"
   collections:
     - fortinet.fortios
 
