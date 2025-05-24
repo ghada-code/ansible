@@ -1,0 +1,10 @@
+[fortigates]
+fortigate1 ansible_host=192.168.1.99
+
+[fortigates:vars]
+ansible_connection=httpapi
+ansible_network_os=fortinet.fortios.fortios
+ansible_httpapi_use_ssl=false
+ansible_httpapi_validate_certs=false
+ansible_httpapi_port=80
+ansible_httpapi_token={{ lookup('env', 'FG_API_TOKEN') }}
