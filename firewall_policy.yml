@@ -13,6 +13,7 @@
         vdom: "root"
         state: "present"
         firewall_policy:
+          policyid: 4
           name: "allow_web"
           srcintf: [{"name": "port1"}]
           dstintf: [{"name": "port2"}]
