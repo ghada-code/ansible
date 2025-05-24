@@ -1,29 +1,24 @@
-- name: Configure FortiGate firewall policy
-  hosts: fortigate1
+---
+- name: Configure FortiGate via API
+  hosts: all
   gather_facts: no
-  vars:
-    fortigate_token: "rH3q6bj3hjr53HHyN0ff163Hf8n6pd"
+  connection: httpapi
+
   collections:
     - fortinet.fortios
 
   tasks:
-    - name: Create firewall rule to allow HTTP
+    - name: Create a basic firewall policy
       fortios_firewall_policy:
         vdom: "root"
         state: "present"
         firewall_policy:
-          policyid: 1
-          name: "allow_HTTP"
-          srcintf:
-            - name: "port1"
-          dstintf:
-            - name: "port2"
-          srcaddr:
-            - name: "all"
-          dstaddr:
-            - name: "all"
+          name: "allow_web"
+          srcintf: [{"name": "port1"}]
+          dstintf: [{"name": "port2"}]
+          srcaddr: [{"name": "all"}]
+          dstaddr: [{"name": "all"}]
           action: "accept"
           schedule: "always"
-          service:
-            - name: "HTTP"
-          nat: "enable"
+          service: [{"name": "HTTP"}]
+          logtraffic: "all"
