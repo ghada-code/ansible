@@ -1,5 +1,5 @@
 - name: Configure FortiGate firewall policy
-  hosts: all
+  hosts: fortigate1
   gather_facts: no
   collections:
     - fortinet.fortios
