@@ -1,7 +1,6 @@
 - name: Configure FortiGate firewall policy
   hosts: fortigate1
   gather_facts: no
-  fortigate_token: "{{ lookup('env', 'FORTIGATE_TOKEN') }}"
   collections:
     - fortinet.fortios
 
