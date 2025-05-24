@@ -1,0 +1,22 @@
+- name: Configure FortiGate firewall policy
+  hosts: all
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: Create firewall rule
+      fortios_firewall_policy:
+        vdom: "root"
+        state: "present"
+        firewall_policy:
+          policyid: 1
+          name: "allow_HTTP"
+          srcintf: [{"name": "port1"}]
+          dstintf: [{"name": "port2"}]
+          srcaddr: [{"name": "all"}]
+          dstaddr: [{"name": "all"}]
+          action: "accept"
+          schedule: "always"
+          service: [{"name": "HTTP"}]
+          nat: "enable"
