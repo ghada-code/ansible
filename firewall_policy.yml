@@ -22,7 +22,7 @@
         state: "present"
         access_token: "{{ fortios_access_token }}" 
         firewall_policy:
-          policyid: 6
+          policyid: 7
           name: "allow_web122"
           srcintf:
             - name: "port1"
