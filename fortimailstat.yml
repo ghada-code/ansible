@@ -1,6 +1,6 @@
 ---
 - name: FortiMail automation example
-  hosts: fortimail1
+  hosts: localhost
   gather_facts: no
   vars:
     fortimail_host: "20.20.20.4"
@@ -8,7 +8,6 @@
     fortimail_pass: "admin"
     base_url: "http://{{ fortimail_host }}/api/v1"
   tasks:
-
     - name: Login to FortiMail and get session token
       uri:
         url: "{{ base_url }}/AdminLogin/"
