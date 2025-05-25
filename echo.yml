@@ -1,3 +1,4 @@
+---
 - name: Debug token
   debug:
     msg: "Token is: {{ fortios_access_token | default('NOT SET') }}"
