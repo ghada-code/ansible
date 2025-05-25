@@ -1,14 +1,9 @@
 ---
-- name: Change hostname on FortiMail
-  hosts: fortimail1
-  gather_facts: no
+- name: Configurer FortiMail
+  hosts: fortimail01
   tasks:
-    - name: Change hostname interactively using expect
-      community.general.expect:
-        command: ssh {{ ansible_user }}@{{ ansible_host }}
-        responses:
-          'Password:': "{{ ansible_password }}"
-          'mail #': "config system global\n"
-          'mail (global) #': "set hostname nouveau-nom\n"
-          'mail (global) #': "end\n"
-          'mail #': "exit\n"
+    - name: Créer un domaine
+      fortimail_domain:
+        name: "example.com"
+        status: "enable"
+        type: "regular"
