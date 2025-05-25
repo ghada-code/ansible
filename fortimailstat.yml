@@ -1,19 +1,9 @@
----
-- name: Add Domain to FortiMail via FortiManager
-  hosts: fortimail1
-  connection: httpapi
-  vars:
-    ansible_network_os: fortinet.fortimanager.fortimanager
-    ansible_httpapi_use_ssl: no
-    ansible_httpapi_validate_certs: no
-    ansible_httpapi_port: 80
-
+- hosts: fortimail1
   tasks:
-    - name: Add email domain
-      fortinet.fortimanager.fmgr_system_log_maildomain:
-        adom: "root"              
-        state: "present"          
-        system_log_maildomain:
-          domain: "yourdomain.com"
-          id: 4                   
-          status: "enable"         
+  - name: Get system info
+    fortimailconfig:
+      action: "get"
+      host:  "{{ host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      resource: "SysStatusSysinfo"
