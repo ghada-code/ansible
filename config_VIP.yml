@@ -15,12 +15,12 @@
     ansible_httpapi_validate_certs: false
 
   tasks:
-    - name: Ajouter VIP "VIP"
+    - name: Ajouter VIP
       fortinet.fortios_firewall_vip:
         vdom: "root"
         state: present
         firewall_vip:
-          name: "VIP"
-          extip: "20.20.20.4"
-          mappedip: "172.29.1.12"
+          name: "VIP1"
+          extip: "20.20.21.4"
+          mappedip: "172.29.1.11"
           extintf: "port3"
