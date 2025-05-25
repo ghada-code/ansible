@@ -1,0 +1,64 @@
+- name: Configurer les politiques firewall FortiGate
+  hosts: fortigate
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Politique ALLOW_NET
+      fortinet.fortios_firewall_policy:
+        vdom: "root"
+        state: present
+        firewall_policy:
+          name: "ALLOW_NET"
+          srcintf: "port1"
+          dstintf: "port2"
+          action: "accept"
+          srcaddr: ["all"]
+          dstaddr: ["all"]
+          schedule: "always"
+          service: ["ALL"]
+          logtraffic: "all"
+          nat: "enable"
+
+    - name: Politique VPN1
+      fortinet.fortios_firewall_policy:
+        vdom: "root"
+        state: present
+        firewall_policy:
+          name: "VPN1"
+          srcintf: "port1"
+          dstintf: "to_FW2"
+          action: "accept"
+          srcaddr: ["port1 address"]
+          dstaddr: ["Site2"]
+          schedule: "always"
+          service: ["ALL"]
+
+    - name: Politique vpnrev
+      fortinet.fortios_firewall_policy:
+        vdom: "root"
+        state: present
+        firewall_policy:
+          name: "vpnrev"
+          srcintf: "to_FW2"
+          dstintf: "port1"
+          action: "accept"
+          srcaddr: ["Site2"]
+          dstaddr: ["port1 address"]
+          schedule: "always"
+          service: ["ALL"]
+
+    - name: Politique dnat
+      fortinet.fortios_firewall_policy:
+        vdom: "root"
+        state: present
+        firewall_policy:
+          name: "dnat"
+          srcintf: "port3"
+          dstintf: "port1"
+          action: "accept"
+          srcaddr: ["all"]
+          dstaddr: ["VIP"]
+          schedule: "always"
+          service: ["ALL"]
