@@ -1,9 +1,12 @@
----
-- name: Set hostname via raw CLI commands
-  raw: |
-    config system global
-    set hostname nouveau-nom
-    end
-  register: raw_result
-  failed_when: false   # Always treat as success
-  changed_when: "'set hostname' in raw_result.stdout or raw_result.rc == 0"
+- name: Test SSH connectivity to FortiMail (safe)
+  hosts: fortimail1
+  gather_facts: no
+
+  tasks:
+    - name: Run a simple command using raw (won't fail for no Python)
+      raw: hostname
+      register: result
+
+    - name: Show hostname output
+      debug:
+        var: result.stdout
