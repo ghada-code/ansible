@@ -1,9 +1,16 @@
 ---
-- name: Configurer FortiMail
-  hosts: fortimail01
+- name: Configure FortiMail
+  hosts: fortimail_server
+  connection: httpapi
+  vars:
+    ansible_network_os: fortinet.fortios.fortios
+    ansible_httpapi_use_ssl: no
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 80
   tasks:
-    - name: Créer un domaine
-      fortimail_domain:
-        name: "example.com"
-        status: "enable"
-        type: "regular"
+    - name: Configure email domain
+      fortios_system_dns:
+        vdom: "root"
+        system_dns:
+          domain: "example.com"
+          primary: "mail.example.com"
