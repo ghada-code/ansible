@@ -7,18 +7,33 @@
   collections:
     - fortinet.fortios
 
+  vars:
+    fortios_access_token: "{{ lookup('env', 'FORTIOS_ACCESS_TOKEN') }}"
+    ansible_connection: httpapi
+    ansible_network_os: fortinet.fortios.fortios
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+
   tasks:
     - name: Create a basic firewall policy
       fortios_firewall_policy:
+        vdom: "root" 
         state: "present"
+        access_token: "{{ fortios_access_token }}" 
         firewall_policy:
           policyid: 6
           name: "allow_web122"
-          srcintf: [{"name": "port1"}]
-          dstintf: [{"name": "port2"}]
-          srcaddr: [{"name": "all"}]
-          dstaddr: [{"name": "all"}]
+          srcintf:
+            - name: "port1"
+          dstintf:
+            - name: "port2"
+          srcaddr:
+            - name: "all"
+          dstaddr:
+            - name: "all"
           action: "accept"
           schedule: "always"
-          service: [{"name": "HTTP"}]
+          service:
+            - name: "HTTP"
           logtraffic: "all"
