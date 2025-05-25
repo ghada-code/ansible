@@ -1,12 +1,16 @@
 ---
-- name: A simple echo test
-  hosts: localhost
+- name: Test API Connection
+  hosts: fortigate1
   gather_facts: false
   tasks:
-    - name: Echo a message
-      ansible.builtin.shell: echo "Hello from AAP 2.4!"
-      register: output
-
-    - name: Show the output
-      ansible.builtin.debug:
-        var: output.stdout
+    - name: Show debug info
+      debug:
+        msg: "Using token ending with {{ password[-4:] }}"
+        
+    - name: Get system status
+      fortios_system_global:
+        vdom: "root"
+      register: result
+      
+    - debug:
+        var: result
