@@ -1,5 +1,11 @@
 ---
-- name: Debug token
-  debug:
-    msg: "Token is: {{ fortios_access_token | default('NOT SET') }}"
-
+- name: Test API Token Authentication
+  hosts: fortigate1
+  gather_facts: false
+  tasks:
+    - name: Get system status
+      fortios_system_global:
+        vdom: "{{ vdom }}"
+      register: result
+    - debug:
+        var: result
