@@ -11,7 +11,7 @@
 
     - name: Login to FortiMail and get session token
       uri:
-        url: "{{ base_url }}/logincheck"
+        url: "{{ base_url }}/AdminLogin"
         method: POST
         body_format: json
         body:
