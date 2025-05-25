@@ -1,11 +1,11 @@
 ---
 - name: Send login request to FortiMail API
-  hosts: localhost
+  hosts: fortimail1
   gather_facts: no
   tasks:
     - name: Login to FortiMail API
       uri:
-        url: "https://20.20.20.4/api/login"
+        url: "https://20.20.20.4/api/v1/AdminLogin/"
         method: POST
         body_format: json
         body:
