@@ -14,7 +14,7 @@
         state: "present"
         firewall_policy:
           policyid: 4
-          name: "allow_web"
+          name: "allow_web12"
           srcintf: [{"name": "port1"}]
           dstintf: [{"name": "port2"}]
           srcaddr: [{"name": "all"}]
