@@ -3,8 +3,12 @@
   hosts: fortimail1
   gather_facts: no
   tasks:
-    - name: Set hostname via CLI commands
-      raw: |
-        config system global
-        set hostname nouveau-nom
-        end
+    - name: Change hostname interactively using expect
+      community.general.expect:
+        command: ssh {{ ansible_user }}@{{ ansible_host }}
+        responses:
+          'Password:': "{{ ansible_password }}"
+          'mail #': "config system global\n"
+          'mail (global) #': "set hostname nouveau-nom\n"
+          'mail (global) #': "end\n"
+          'mail #': "exit\n"
