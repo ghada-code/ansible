@@ -1,0 +1,51 @@
+- name: Configurer les interfaces FortiGate
+  hosts: fortigate
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Configurer interface port1
+      fortinet.fortios_system_interface:
+        vdom: "root"
+        state: present
+        system_interface:
+          name: "port1"
+          ip: "172.29.1.1 255.255.255.0"
+          allowaccess: ["ping","https","ssh","http","fgfm"]
+          type: "physical"
+          alias: "Site1"
+          device_identification: "enable"
+          lldp_transmission: "enable"
+          role: "lan"
+          snmp_index: 1
+
+    - name: Configurer interface port2
+      fortinet.fortios_system_interface:
+        vdom: "root"
+        state: present
+        system_interface:
+          name: "port2"
+          mode: "dhcp"
+          allowaccess: ["ping","https","ssh","http","fgfm"]
+          type: "physical"
+          alias: "wan"
+          lldp_reception: "enable"
+          role: "wan"
+          snmp_index: 2
+          dns_server_override: "disable"
+
+    - name: Configurer interface port3
+      fortinet.fortios_system_interface:
+        vdom: "root"
+        state: present
+        system_interface:
+          name: "port3"
+          ip: "20.20.20.2 255.255.255.0"
+          allowaccess: ["ping","https","ssh","fgfm"]
+          type: "physical"
+          alias: "wan"
+          device_identification: "enable"
+          lldp_reception: "enable"
+          role: "wan"
+          snmp_index: 3
