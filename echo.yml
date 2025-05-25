@@ -1,16 +1,4 @@
----
-- name: Test API Connection
-  hosts: fortigate1
-  gather_facts: false
-  tasks:
-    - name: Show debug info
-      debug:
-        msg: "Using token ending with {{ password[-4:] }}"
-        
-    - name: Get system status
-      fortios_system_global:
-        vdom: "root"
-      register: result
-      
-    - debug:
-        var: result
+- name: Debug token
+  debug:
+    msg: "Token is: {{ fortios_access_token | default('NOT SET') }}"
+
