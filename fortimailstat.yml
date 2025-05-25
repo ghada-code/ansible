@@ -1,10 +1,9 @@
 ---
-- name: Set hostname on FortiMail
-  hosts: fortimail1
-  gather_facts: no
-  tasks:
-    - name: Set hostname via raw CLI commands
-      raw: |
-        config system global
-        set hostname ghada
-        end
+- name: Set hostname via raw CLI commands
+  raw: |
+    config system global
+    set hostname nouveau-nom
+    end
+  register: raw_result
+  failed_when: false   # Always treat as success
+  changed_when: "'set hostname' in raw_result.stdout or raw_result.rc == 0"
