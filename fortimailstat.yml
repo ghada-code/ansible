@@ -1,9 +1,18 @@
 - hosts: fortimail1
+  vars:
+   host: "20.20.20.4"
+   username: "admin"
+   password: "admin"
+#   vdom: "root"
   tasks:
-  - name: Get system info
-    fortimailconfig:
-      action: "get"
-      host:  "{{ host }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      resource: "SysStatusSysinfo"
+  - name: Try to pass cli cmd ssh
+    fortimail:
+     action: "ssh"
+     host:  "{{  host }}"  
+     username: "{{  username}}"  
+     password: "{{ password }}"  
+     commands: |
+               get system interface
+               get system status
+               execute update now
+
