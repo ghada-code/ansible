@@ -1,0 +1,22 @@
+- name: Configurer des routes statiques FortiGate
+  hosts: fortigate
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Route statique vers 172.29.2.0/24 via to_FW2
+      fortinet.fortios_router_static:
+        vdom: "root"
+        state: present
+        router_static:
+          dst: "172.29.2.0 255.255.255.0"
+          device: "to_FW2"
+
+    - name: Route statique par défaut vers gateway 20.20.20.1 sur port3
+      fortinet.fortios_router_static:
+        vdom: "root"
+        state: present
+        router_static:
+          gateway: "20.20.20.1"
+          device: "port3"
