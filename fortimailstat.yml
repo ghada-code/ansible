@@ -1,24 +1,20 @@
 ---
-- name: Login to FortiMail and capture session
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Send login request to FortiMail API
-      uri:
-        url: "https://20.20.20.4/api/v1/AdminLogin/"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-          Accept: "application/json"
-        body:
-          username: "admin"
-          password: "admin"
-        body_format: json
-        return_content: yes
-        validate_certs: no
-        status_code: 200
-      register: login_result
-
-    - name: Show login result
-      debug:
-        var: login_result.json
+- name: Send login request to FortiMail API
+  uri:
+    url: "https://20.20.20.4/api/v1/AdminLogin/"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+      Referer: "https://20.20.20.4/"
+      Origin: "https://20.20.20.4"
+      User-Agent: "Mozilla/5.0"
+      X-Requested-With: "XMLHttpRequest"
+    body:
+      username: "admin"
+      password: "admin"
+    body_format: json
+    return_content: yes
+    validate_certs: no
+    status_code: 200
+  register: login_result
