@@ -1,5 +1,4 @@
----
-- name: Configurer un VIP FortiGate minimal
+- name: Configurer un VIP FortiGate avec plus de détails
   hosts: all
   gather_facts: no
   connection: httpapi
@@ -16,15 +15,24 @@
     ansible_httpapi_validate_certs: false
 
   tasks:
-    - name: Ajouter VIP simple
-      fortinet.fortios.fortios_firewall_vip:
-        vdom: "root" 
+    - name: Ajouter ou modifier un VIP avec champs avancés
+      fortios_firewall_vip:
+        vdom: "root"
         state: "present"
-        access_token: "{{ fortios_access_token }}"
         firewall_vip:
           name: "VIP1"
-          extip: "20.20.21.4"
-          mappedip: "172.29.1.11"
-          extintf: "port3"
+          extip:
+            - range: "20.20.21.4-20.20.21.8"   # plage d'IP externes
+          mappedip:
+            - range: "172.29.1.11-172.29.1.15" # plage d'IP mappées internes
+          extintf:
+            - interface_name: "port3"           # interface externe
+          srcintf_filter:
+            - interface_name: "port1"           # interface source filtrée
+          status: "enable"                      # état actif
+          priority: 10                         # priorité (si supporté, ex: gslb_public_ips)
+          gslb_public_ips:
+            - ip: "20.20.21.4"
+              index: 1
+              priority: 10
           type: "static-nat"
-          status: "enable"
