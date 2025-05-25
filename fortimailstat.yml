@@ -1,13 +1,10 @@
 ---
-- name: Change hostname on FortiMail via SSH
+- name: Change hostname on FortiMail
   hosts: fortimail1
   gather_facts: no
   tasks:
-    - name: Set hostname
+    - name: Set hostname via CLI commands
       raw: |
-        ssh admin@{{ ansible_host }} << EOF
         config system global
         set hostname nouveau-nom
         end
-        exit
-        EOF
