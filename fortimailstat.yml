@@ -1,3 +1,4 @@
+---
 - name: Test SSH connectivity to FortiMail (safe)
   hosts: fortimail1
   gather_facts: no
