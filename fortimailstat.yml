@@ -1,5 +1,6 @@
 ---
 - name: Send login request to FortiMail API
+  hosts: localhost
   uri:
     url: "https://20.20.20.4/api/v1/AdminLogin/"
     method: POST
