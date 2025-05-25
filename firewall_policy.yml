@@ -12,7 +12,7 @@
       fortios_firewall_policy:
         state: "present"
         firewall_policy:
-          policyid: 5
+          policyid: 6
           name: "allow_web122"
           srcintf: [{"name": "port1"}]
           dstintf: [{"name": "port2"}]
