@@ -1,0 +1,16 @@
+- name: Configurer un VIP FortiGate
+  hosts: fortigate
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Ajouter VIP "VIP"
+      fortinet.fortios_firewall_vip:
+        vdom: "root"
+        state: present
+        firewall_vip:
+          name: "VIP"
+          extip: "20.20.20.4"
+          mappedip: "172.29.1.12"
+          extintf: "port3"
