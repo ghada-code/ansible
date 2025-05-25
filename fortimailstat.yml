@@ -1,13 +1,19 @@
 ---
-- name: Test SSH connectivity to FortiMail (safe)
+- name: Add Domain to FortiMail via FortiManager
   hosts: fortimail1
-  gather_facts: no
+  connection: httpapi
+  vars:
+    ansible_network_os: fortinet.fortimanager.fortimanager
+    ansible_httpapi_use_ssl: no
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 80
 
   tasks:
-    - name: Run a simple command using raw (won't fail for no Python)
-      raw: hostname
-      register: result
-
-    - name: Show hostname output
-      debug:
-        var: result.stdout
+    - name: Add email domain
+      fortinet.fortimanager.fmgr_system_log_maildomain:
+        adom: "root"              
+        state: "present"          
+        system_log_maildomain:
+          domain: "yourdomain.com"
+          id: 4                   
+          status: "enable"         
