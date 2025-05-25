@@ -1,5 +1,5 @@
 - name: Configurer un VIP FortiGate
-  hosts: fortigate
+  hosts: fortigate1
   gather_facts: no
   connection: httpapi
 
