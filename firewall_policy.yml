@@ -10,11 +10,10 @@
   tasks:
     - name: Create a basic firewall policy
       fortios_firewall_policy:
-        vdom: "root"
         state: "present"
         firewall_policy:
-          policyid: 4
-          name: "allow_web12"
+          policyid: 5
+          name: "allow_web122"
           srcintf: [{"name": "port1"}]
           dstintf: [{"name": "port2"}]
           srcaddr: [{"name": "all"}]
