@@ -16,7 +16,7 @@
 
   tasks:
     - name: Ajouter VIP
-      fortinet.fortios_firewall_vip:
+      fortinet.fortios.fortios_firewall_vip:
         vdom: "root"
         state: present
         firewall_vip:
