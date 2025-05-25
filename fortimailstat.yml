@@ -1,6 +1,6 @@
 ---
 - name: Configure FortiMail
-  hosts: fortimail_server
+  hosts: fortimail1
   connection: httpapi
   vars:
     ansible_network_os: fortinet.fortios.fortios
