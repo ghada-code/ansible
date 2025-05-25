@@ -6,5 +6,5 @@
     - name: Set hostname via raw CLI commands
       raw: |
         config system global
-        set hostname nouveau-nom
+        set hostname ghada
         end
