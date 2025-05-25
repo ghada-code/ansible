@@ -6,7 +6,7 @@
     fortimail_host: "20.20.20.4"
     fortimail_user: "admin"
     fortimail_pass: "admin"
-    base_url: "https://{{ fortimail_host }}/api/v1"
+    base_url: "http://{{ fortimail_host }}/api/v1"
   tasks:
 
     - name: Login to FortiMail and get session token
@@ -24,17 +24,3 @@
     - name: Show login response
       debug:
         var: login_response.json
-
-    - name: Get FortiMail system status
-      uri:
-        url: "{{ base_url }}/system/status"
-        method: GET
-        headers:
-          Authorization: "Bearer {{ login_response.json.token }}"
-        validate_certs: no
-        return_content: yes
-      register: status_response
-
-    - name: Show system status
-      debug:
-        var: status_response.json
