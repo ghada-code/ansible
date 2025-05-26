@@ -28,5 +28,5 @@
           extintf: "port3"   
           extip: "20.20.20.5"           
           mappedip:
-            - range: "172.29.1.11-172.29.1.15"
+            - range: "172.29.1.11"
           type: "static-nat"
