@@ -20,5 +20,5 @@
         state: "present"
         router_static:
           seq_num: "5"
-          dst: "172.29.2.0 255.255.255.0"
+          dst: "172.29.3.0 255.255.255.0"
           device: "to_FW2"
