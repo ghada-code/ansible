@@ -26,5 +26,5 @@
           net_device: "disable"
           proposal: "des-sha256"
           remote_gw: "192.168.111.167"
-          psksecret: "chiff"
+          psksecret: "chiffre"
 
