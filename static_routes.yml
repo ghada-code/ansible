@@ -1,22 +1,24 @@
+---
 - name: Configurer des routes statiques FortiGate
-  hosts: fortigate
+  hosts: fortigate1
   connection: httpapi
   gather_facts: no
   collections:
     - fortinet.fortios
+  vars:
+    fortios_access_token: "{{ lookup('env', 'FORTIOS_ACCESS_TOKEN') }}"
+    ansible_connection: httpapi
+    ansible_network_os: fortinet.fortios.fortios
+    ansible_httpapi_port: 80
+    ansible_httpapi_use_ssl: no
+    ansible_httpapi_validate_certs: false
   tasks:
-    - name: Route statique vers 172.29.2.0/24 via to_FW2
-      fortinet.fortios_router_static:
+    - name: Route statique vers 172.29.3.0/24 via to_FW2
+      fortios_router_static:
         vdom: "root"
-        state: present
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
         router_static:
+          seq_num: "5"
           dst: "172.29.2.0 255.255.255.0"
           device: "to_FW2"
-
-    - name: Route statique par défaut vers gateway 20.20.20.1 sur port3
-      fortinet.fortios_router_static:
-        vdom: "root"
-        state: present
-        router_static:
-          gateway: "20.20.20.1"
-          device: "port3"
