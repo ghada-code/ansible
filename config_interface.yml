@@ -22,7 +22,6 @@
         access_token: "{{ fortios_access_token }}" 
         system_interface:
           name: "port4"
-          id: "5"
           ip: "172.29.3.1 255.255.255.0"
           allowaccess: ["ping","https","ssh","http","fgfm"]
           type: "physical"
