@@ -19,7 +19,7 @@
     - name: Configure virtual IP 
       fortios_firewall_vip:
         vdom: "root"
-        state: "present"
+        state: "absent"
         access_token: "{{ fortios_access_token }}"
         firewall_vip:
           name: "VIP1"                 
