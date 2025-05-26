@@ -20,7 +20,7 @@
         access_token: "{{ fortios_access_token }}"
         vpn_ipsec_phase1_interface:
           name: "to_FW2"
-          interface: "port3"
+          interface: "port2"
           keylife: 172800
           peertype: "any"
           net_device: "disable"
