@@ -1,3 +1,4 @@
+---
 - name: Configurer un VIP FortiGate avec plus de détails
   hosts: all
   gather_facts: no
@@ -13,24 +14,19 @@
     ansible_httpapi_port: 80
     ansible_httpapi_use_ssl: no
     ansible_httpapi_validate_certs: false
-    vdom: "root" 
 
   tasks:
     - name: Configure virtual IP 
-      fortinet.fortios.fortios_firewall_vip:
-        vdom: "{{ vdom }}"
+      fortios_firewall_vip:
+        vdom: "root"
         state: "present"
         access_token: "{{ fortios_access_token }}"
         firewall_vip:
-          name: "VIP1"                   # Nom du VIP
+          name: "VIP1"                 
           status: "enable"              
-          id: "4"
-          extaddr:
-            - name: "extaddr_1"   
-          extintf:
-            - interface_name: "port3"   # Interface externe
-          extip: "20.20.21.4"           # IP externe
+          id: "4" 
+          extintf: "port3"   
+          extip: "20.20.20.5"           
           mappedip:
             - range: "172.29.1.11-172.29.1.15"
-          mappedport: "80"
           type: "static-nat"
