@@ -13,38 +13,24 @@
     ansible_httpapi_port: 80
     ansible_httpapi_use_ssl: no
     ansible_httpapi_validate_certs: false
-    vdom: "root"  # Ajouté pour éviter erreur sur vdom non défini
+    vdom: "root" 
 
   tasks:
-    - name: Configure virtual IP for IPv4 with edits on name, range, interface_name, state, priority
+    - name: Configure virtual IP 
       fortinet.fortios.fortios_firewall_vip:
         vdom: "{{ vdom }}"
         state: "present"
         access_token: "{{ fortios_access_token }}"
         firewall_vip:
           name: "VIP1"                   # Nom du VIP
-          status: "enable"               # Etat actif ("enable" / "disable")
+          status: "enable"              
+          id: "4"
           extaddr:
-            - name: "extaddr_1"         # Nom dans extaddr (adresse/firewall object)
+            - name: "extaddr_1"   
           extintf:
             - interface_name: "port3"   # Interface externe
           extip: "20.20.21.4"           # IP externe
-          extport: "8080"                # Port externe
-          gslb_domain_name: "example.com"
-          gslb_hostname: "host1"
-          gslb_public_ips:
-            - index: 1
-              ip: "20.20.21.4"
-              priority: 10              # Priorité dans gslb_public_ips
           mappedip:
-            - range: "172.29.1.11-172.29.1.15"  # Plage IP mappées internes
+            - range: "172.29.1.11-172.29.1.15"
           mappedport: "80"
-          monitor:
-            - name: "monitor1"          # Nom du moniteur
-          src_filter:
-            - range: "192.168.1.1-192.168.1.255" # Plage source filtrée
-          srcintf_filter:
-            - interface_name: "port1"   # Interface source filtrée
-          service:
-            - name: "HTTP"
           type: "static-nat"
