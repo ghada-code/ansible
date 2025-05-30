@@ -19,7 +19,7 @@
     - name: Create a basic firewall policy
       fortios_firewall_policy:
         vdom: "root" 
-        state: "present"
+        state: "absent"
         access_token: "{{ fortios_access_token }}" 
         firewall_policy:
           policyid: 7
