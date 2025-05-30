@@ -1,0 +1,24 @@
+---
+- name: Set FortiGate hostname
+  hosts: fortigate1
+  connection: httpapi
+  gather_facts: no
+
+  collections:
+    - fortinet.fortios
+
+  vars:
+    fortios_access_token: "{{ lookup('env', 'FORTIOS_ACCESS_TOKEN') }}"
+    ansible_connection: httpapi
+    ansible_network_os: fortinet.fortios.fortios
+    ansible_httpapi_port: 80
+    ansible_httpapi_use_ssl: no
+    ansible_httpapi_validate_certs: false
+
+  tasks:
+    - name: Configure system global settings (hostname)
+      fortios_system_global:
+        vdom: "root" 
+        access_token: "{{ fortios_access_token }}"
+        system_global:
+          hostname: "SITE1-FortiGate"
