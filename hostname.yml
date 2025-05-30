@@ -1,6 +1,6 @@
 ---
 - name: Set FortiGate hostname
-  hosts: fortigate1
+  hosts: fortigate2
   connection: httpapi
   gather_facts: no
 
@@ -21,4 +21,4 @@
         vdom: "root" 
         access_token: "{{ fortios_access_token }}"
         system_global:
-          hostname: "SITE1-FortiGate"
+          hostname: "SITE2-FortiGate"
