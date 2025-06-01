@@ -6,6 +6,8 @@
     fortimail_user: "admin"
     fortimail_pass: "admin"
     new_hostname: "new-fortimail-hostname"
+    domain_name: "domain2.local"
+    domain_ip: "192.168.52.137"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -22,24 +24,6 @@
         status_code: 200
       register: login_response
 
-    - name: Extract session cookie
-      set_fact:
-        fm_cookie: "{{ login_response.set_cookie }}"
-
-    tasks:
-    - name: Login to FortiMail and get session cookie
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
-        method: POST
-        headers:
-          Content-Type: application/json
-        body:
-          name: "{{ fortimail_user }}"
-          password: "{{ fortimail_pass }}"
-        body_format: json
-        validate_certs: no
-        return_content: yes
-      register: login_response
     - name: Extract session cookie
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
@@ -71,3 +55,37 @@
     - name: Show response from domain add
       debug:
         var: domain_add_response.json
+
+    - name: Get current system settings
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SystemSettings"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie }}"
+        validate_certs: no
+        return_content: yes
+      register: system_settings
+
+    - name: Load system settings JSON
+      set_fact:
+        system_settings_json: "{{ system_settings.json }}"
+
+    - name: Update hostname in system settings JSON
+      set_fact:
+        updated_settings: "{{ system_settings_json | combine({'hostname': new_hostname}) }}"
+
+    - name: Push updated system settings (change hostname)
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SystemSettings"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie }}"
+          Content-Type: application/json
+        body: "{{ updated_settings }}"
+        body_format: json
+        validate_certs: no
+        status_code: [200, 204]
+
+    - name: Confirm hostname changed
+      debug:
+        msg: "Hostname changed to {{ new_hostname }}"
