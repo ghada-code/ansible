@@ -1,25 +1,25 @@
 ---
-- name: FortiMail - Check system status
+- name: FortiMail API - Get system status
   hosts: localhost
   gather_facts: no
 
   vars:
-    fortimail_host: "https://20.20.20.4"  # replace with your IP
-    fortimail_user: "apiadmin"
-    fortimail_pass: "admin"
+    fortimail_host: "https://20.20.20.4"       # Replace with your real FortiMail IP
+    fortimail_user: "{{ fortimail_user }}"     # Passed from credential or survey
+    fortimail_pass: "{{ fortimail_pass }}"     # Passed from credential or survey
 
   tasks:
-    - name: Check FortiMail system status
+    - name: Get FortiMail system status
       uri:
         url: "{{ fortimail_host }}/api/v1/system/status"
         method: GET
         user: "{{ fortimail_user }}"
         password: "{{ fortimail_pass }}"
         force_basic_auth: yes
-        validate_certs: no   # set to yes if using valid cert
+        validate_certs: no
         return_content: yes
       register: result
 
-    - name: Show result
+    - name: Print system status
       debug:
         var: result.json
