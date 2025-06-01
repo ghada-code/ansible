@@ -1,18 +1,25 @@
 ---
-- name: Send login request to FortiMail API
-  hosts: fortimail1
+- name: FortiMail - Check system status
+  hosts: fortimail
   gather_facts: no
+
+  vars:
+    fortimail_host: "https://20.20.20.4"  # replace with your IP
+    fortimail_user: "apiadmin"
+    fortimail_pass: "admin"
+
   tasks:
-    - name: Login to FortiMail API
+    - name: Check FortiMail system status
       uri:
-        url: "https://20.20.20.4/api/v1/AdminLogin/"
-        method: POST
-        body_format: json
-        body:
-          username: "admin"
-          password: "admin"
-        headers:
-          Content-Type: "application/json"
-        validate_certs: no
+        url: "{{ fortimail_host }}/api/v1/system/status"
+        method: GET
+        user: "{{ fortimail_user }}"
+        password: "{{ fortimail_pass }}"
+        force_basic_auth: yes
+        validate_certs: no   # set to yes if using valid cert
         return_content: yes
-      register: login_response
+      register: result
+
+    - name: Show result
+      debug:
+        var: result.json
