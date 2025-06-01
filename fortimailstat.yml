@@ -2,7 +2,7 @@
 - hosts: localhost
   gather_facts: no
   vars:
-    fortimail_ip: "20.20.20.4"
+    fortimail_ip: "20.20.20.2"
     fortimail_user: "admin"
     fortimail_pass: "admin"
     new_hostname: "new-fortimail-hostname"
