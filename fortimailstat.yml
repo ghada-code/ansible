@@ -1,33 +1,60 @@
 - hosts: localhost
   gather_facts: no
+  vars:
+    fortimail_ip: "20.20.20.4"
+    fortimail_user: "admin"
+    fortimail_pass: "admin"
+    new_hostname: "new-fortimail-hostname"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
-        url: https://20.20.20.4/api/v1/AdminLogin
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
         method: POST
         headers:
           Content-Type: application/json
-        body: '{"name":"admin","password":"admin"}'
+        body:
+          name: "{{ fortimail_user }}"
+          password: "{{ fortimail_pass }}"
         body_format: json
         validate_certs: no
         return_content: yes
         status_code: 200
       register: login_response
 
-    - name: Extract cookie from login response headers
+    - name: Extract session cookie
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
 
-    - name: Get domain info using session cookie
+    - name: Get current system settings
       uri:
-        url: https://20.20.20.4/api/v1/Domain
+        url: "https://{{ fortimail_ip }}/api/v1/SystemSettings"
         method: GET
         headers:
           Cookie: "{{ fm_cookie }}"
         validate_certs: no
         return_content: yes
-      register: domain_response
+      register: system_settings
 
-    - name: Show domain info
+    - name: Load system settings JSON
+      set_fact:
+        system_settings_json: "{{ system_settings.json }}"
+
+    - name: Update hostname in system settings JSON
+      set_fact:
+        updated_settings: "{{ system_settings_json | combine({'hostname': new_hostname}) }}"
+
+    - name: Push updated system settings (change hostname)
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SystemSettings"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie }}"
+          Content-Type: application/json
+        body: "{{ updated_settings }}"
+        body_format: json
+        validate_certs: no
+        status_code: [200, 204]
+
+    - name: Confirm hostname changed
       debug:
-        var: domain_response.content
+        msg: "Hostname changed to {{ new_hostname }}"
