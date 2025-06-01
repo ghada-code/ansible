@@ -1,6 +1,6 @@
 ---
 - name: FortiMail - Check system status
-  hosts: fortimail
+  hosts: fortimail1
   gather_facts: no
 
   vars:
