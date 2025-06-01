@@ -11,7 +11,7 @@
   tasks:
     - name: Get FortiMail system status
       uri:
-        url: "{{ fortimail_host }}/api/v1/system/status"
+        url: "{{ fortimail_host }}/api/v1/SysInterface/"
         method: GET
         user: "{{ fortimail_user }}"
         password: "{{ fortimail_pass }}"
