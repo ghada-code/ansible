@@ -17,37 +17,11 @@
   tasks:
 
     - name: Get existing VIPs
-      fortios_monitor:
+      fortios_configuration_fact:
         access_token: "{{ fortios_access_token }}"
-        vdom: "root"
         selector: "firewall_vip"
-        params:
-          with_meta: "false"
       register: vip_list
 
-    - name: Check if VIP1 exists
-      set_fact:
-        vip_exists: "{{ vip_list.meta | selectattr('name', 'equalto', vip_name) | list | length > 0 }}"
-
-    - name: Delete VIP1 if already exists
-      fortios_firewall_vip:
-        access_token: "{{ fortios_access_token }}"
-        state: "absent"
-        firewall_vip:
-          name: "{{ vip_name }}"
-      when: vip_exists
-
-    - name: Create VIP1 if not present
-      fortios_firewall_vip:
-        access_token: "{{ fortios_access_token }}"
-        state: "present"
-        firewall_vip:
-          name: "{{ vip_name }}"
-          status: "enable"
-          id: "{{ vip_id }}"
-          extintf: "{{ vip_interface }}"
-          extip: "{{ vip_extip }}"
-          mappedip:
-            - range: "{{ vip_mappedip }}"
-          type: "static-nat"
-      when: not vip_exists
+    - name: Print disk event logs
+      debug:
+        var: vip_list
