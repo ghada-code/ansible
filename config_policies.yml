@@ -7,10 +7,11 @@
     - fortinet.fortios
   tasks:
     - name: Politique ALLOW_NET
-      fortinet.fortios_firewall_policy:
-        vdom: "root"
-        state: present
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
         firewall_policy:
+          policyid: 1
           name: "ALLOW_NET"
           srcintf: "port1"
           dstintf: "port2"
@@ -23,10 +24,11 @@
           nat: "enable"
 
     - name: Politique VPN1
-      fortinet.fortios_firewall_policy:
-        vdom: "root"
-        state: present
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
         firewall_policy:
+          policyid: 2
           name: "VPN1"
           srcintf: "port1"
           dstintf: "to_FW2"
@@ -35,12 +37,14 @@
           dstaddr: ["Site2"]
           schedule: "always"
           service: ["ALL"]
+          nat: "disable"
 
     - name: Politique vpnrev
-      fortinet.fortios_firewall_policy:
-
-        state: present
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
         firewall_policy:
+          policyid: 3
           name: "vpnrev"
           srcintf: "to_FW2"
           dstintf: "port1"
@@ -49,12 +53,14 @@
           dstaddr: ["port1 address"]
           schedule: "always"
           service: ["ALL"]
+          nat: "disable"
 
     - name: Politique dnat
       fortinet.fortios_firewall_policy:
         vdom: "root"
         state: present
         firewall_policy:
+          policyid: 4
           name: "dnat"
           srcintf: "port3"
           dstintf: "port1"
@@ -63,3 +69,4 @@
           dstaddr: ["mail"]
           schedule: "always"
           service: ["ALL"]
+          nat: "disable"
