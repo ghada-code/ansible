@@ -7,11 +7,19 @@
     - fortinet.fortios
 
   tasks:
-    - name: Route statique
+    - name: Route statique 1
       fortios_router_static:
         access_token: "{{ fortios_access_token }}" 
         state: "present"
         router_static:
-          seq_num: "5"
-          dst: "172.29.3.0 255.255.255.0"
+          seq_num: "1"
+          dst: "172.29.2.0 255.255.255.0"
           device: "to_FW2"
+    - name: Route statique 2
+      fortios_router_static:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
+        router_static:
+          seq_num: "2"
+          dst: "0.0.0.0 0.0.0.0"
+          device: "port3"
