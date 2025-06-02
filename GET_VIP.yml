@@ -1,27 +1,18 @@
 ---
-- name: Configurer un VIP FortiGate
+- name: Get Existing VIP list
   hosts: fortigate1
   gather_facts: no
   connection: httpapi
 
   collections:
     - fortinet.fortios
-
-  vars:
-    vip_name: "VIP1"
-    vip_interface: "port3"
-    vip_extip: "20.20.20.5"
-    vip_mappedip: "172.29.1.11"
-    vip_id: "4"
-
   tasks:
-
     - name: Get existing VIPs
       fortios_configuration_fact:
         access_token: "{{ fortios_access_token }}"
         selector: "firewall_vip"
       register: vip_list
 
-    - name: Print disk event logs
+    - name: Print existing VIPs
       debug:
         var: vip_list
