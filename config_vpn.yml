@@ -28,7 +28,7 @@
     - fortinet.fortios
   tasks:
     - name: Phase2 interface to_FW2
-      fortinet.fortios_vpn_ipsec_phase2_interface:
+      fortios_vpn_ipsec_phase2_interface:
         state: "present"
         vpn_ipsec_phase2_interface:
           name: "to_FW2"
