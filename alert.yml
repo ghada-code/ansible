@@ -12,8 +12,7 @@
       fortios_log_fact:
         access_token: "{{ fortios_access_token }}" 
         selectors:
-          - selector: disk_event_user
-          - selector: memory_event_user
+          - selector: memory_event_vpn
       register: disk_logs
 
     - name: Print disk event logs
