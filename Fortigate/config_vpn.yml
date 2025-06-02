@@ -1,0 +1,40 @@
+- name: Configurer VPN IPsec phase1
+  hosts: fortigate1
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+    
+  tasks:
+    - name: Phase1 interface to_FW2
+      fortios_vpn_ipsec_phase1_interface:
+        state: "present"
+        access_token: "{{ fortios_access_token }}"
+        vpn_ipsec_phase1_interface:
+          name: "to_FW2"
+          interface: "port2"
+          keylife: 172800
+          peertype: "any"
+          net_device: "disable"
+          proposal: "des-sha256"
+          remote_gw: "192.168.111.167"
+          psksecret: "chiffre"
+
+- name: Configurer VPN IPsec phase2
+  hosts: fortigate1
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Phase2 interface to_FW2
+      fortios_vpn_ipsec_phase2_interface:
+        access_token: "{{ fortios_access_token }}"
+        state: "present"
+        vpn_ipsec_phase2_interface:
+          name: "to_FW2"
+          phase1name: "to_FW2"
+          proposal: "des-sha256"
+          keylifeseconds: 172800
+          src_subnet: "172.29.1.0 255.255.255.0"
+          dst_subnet: "172.29.2.0 255.255.255.0"

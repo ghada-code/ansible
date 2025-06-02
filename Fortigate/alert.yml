@@ -1,0 +1,20 @@
+---
+- name: EVENTS
+  hosts: fortigate1
+  gather_facts: no
+  connection: httpapi
+
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: disk_event_user_logs
+      fortios_log_fact:
+        access_token: "{{ fortios_access_token }}" 
+        selectors:
+          - selector: disk_event_user
+      register: disk_event_user_logs
+
+    - name: Print disk event logs
+      debug:
+        var: disk_event_user_logs

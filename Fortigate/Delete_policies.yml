@@ -1,0 +1,96 @@
+- name: Configurer les politiques firewall FortiGate
+  hosts: fortigate1
+  gather_facts: no
+  connection: httpapi
+
+  collections:
+    - fortinet.fortios
+  tasks:
+    - name: Politique ALLOW_NET
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "absent"
+        firewall_policy:
+          policyid: 1
+          name: "ALLOW_NET"
+          srcintf:
+            - name: "port1"
+          dstintf:
+            - name: "port2"
+          srcaddr:
+            - name: "all"
+          dstaddr:
+            - name: "all"
+          action: "accept"
+          schedule: "always"
+          service:
+            - name: "ALL"
+          logtraffic: "all"
+          nat: "enable"
+
+
+    - name: Politique VPN1
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "absent"
+        firewall_policy:
+          policyid: 2
+          name: "VPN1"
+          srcintf:
+            - name: "port1"
+          dstintf:
+            - name: "to_FW2"
+          srcaddr:
+            - name: "port1 address"
+          dstaddr:
+            - name: "Site2"
+          action: "accept"
+          schedule: "always"
+          service:
+            - name: "ALL"
+          logtraffic: "all"
+          nat: "disable"
+
+    - name: Politique vpnrev
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "absent"
+        firewall_policy:
+          policyid: 3
+          name: "vpnrev"
+          srcintf:
+            - name: "to_FW2"
+          dstintf:
+            - name: "port1"
+          srcaddr:
+            - name: "Site2"
+          dstaddr:
+            - name: "port1 address"
+          action: "accept"
+          schedule: "always"
+          service:
+            - name: "ALL"
+          logtraffic: "all"
+          nat: "disable"
+
+    - name: Politique dnat
+      fortios_firewall_policy:
+        access_token: "{{ fortios_access_token }}" 
+        state: "absent"
+        firewall_policy:
+          policyid: 4
+          name: "dnat"
+          srcintf:
+            - name: "port3"
+          dstintf:
+            - name: "port1"
+          srcaddr:
+            - name: "all"
+          dstaddr:
+            - name: "mail"
+          action: "accept"
+          schedule: "always"
+          service:
+            - name: "ALL"
+          logtraffic: "all"
+          nat: "disable"

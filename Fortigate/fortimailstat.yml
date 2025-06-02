@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    fortimail_ip: "20.20.20.2"
+    fortimail_user: "admin"
+    fortimail_pass: "admin"
+    new_hostname: "new-fortimail-hostname"
+    domain_name: "domain2.local"
+    domain_ip: "192.168.52.137"
+  tasks:
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_user }}"
+          password: "{{ fortimail_pass }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie
+      set_fact:
+        fm_cookie: "{{ login_response.set_cookie }}"
+
+    - name: Add domain to FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/{{ domain_name }}"
+        method: POST
+        headers:
+          Content-Type: application/json
+          Cookie: "{{ fm_cookie }}"
+        body:
+          mkey: "{{ domain_name }}"
+          ip: "{{ domain_ip }}"
+          port: 25
+          is_subdomain: false
+          maindomain: "{{ domain_name }}"
+          mxflag: 0
+          is_association: false
+          is_service_domain: false
+          recipient_verification: "SMTP"
+          ec_status: true
+          failed_time: 1
+        body_format: json
+        validate_certs: no
+        status_code: [200, 201]
+      register: domain_add_response

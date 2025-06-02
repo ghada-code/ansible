@@ -1,0 +1,25 @@
+---
+- name: Get System Status
+  hosts: fortigate1
+  gather_facts: no
+  connection: httpapi
+
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: get system status 
+      fortios_monitor_fact:
+        access_token: "{{ fortios_access_token }}"
+        selectors:
+          - selector: license_status
+          - selector: system_status
+          - selector: system_firmware
+          - selector: system_current-admins
+          - selector: system_time
+      register: status
+
+    
+    - name:  get system status 
+      debug:
+        var: status
