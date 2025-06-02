@@ -20,7 +20,7 @@
           lldp_transmission: "enable"
           role: "lan"
           snmp_index: 1
-          status: "down"
+          status: "up"
     - name: Configurer interface port2
       fortios_system_interface:
         state: "present"
@@ -50,5 +50,5 @@
           lldp_reception: "enable"
           role: "wan"
           snmp_index: 3
-          status: "down"
+          status: "up"
 
