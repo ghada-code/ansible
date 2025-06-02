@@ -1,1 +1,16 @@
+---
+- name: Configurer DNS
+  hosts: fortigate1
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
 
+  tasks:
+    - name: config dns 
+      fortios_system_dns:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
+        system_dns:
+          alt_primary: "192.168.111.151"
+          alt_secondary: "8.8.8.8"
