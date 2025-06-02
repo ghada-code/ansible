@@ -13,6 +13,9 @@
         access_token: "{{ fortios_access_token }}" 
         selectors:
           - selector: disk_event_user
-            filters:
-                - log_id==41000
           - selector: memory_event_user
+      register: disk_logs
+
+    - name: Print disk event logs
+      debug:
+        var: disk_logs
