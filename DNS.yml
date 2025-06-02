@@ -12,4 +12,4 @@
         access_token: "{{ fortios_access_token }}" 
         system_dns:
           primary: "192.168.111.151"
-          secondary: "8.8.8.8"
+          secondary: "172.29.1.11"
