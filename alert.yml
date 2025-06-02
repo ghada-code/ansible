@@ -1,0 +1,18 @@
+---
+- name: Configure FortiGate via API
+  hosts: fortigate1
+  gather_facts: no
+  connection: httpapi
+
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: Create a basic firewall policy
+      fortios_log_fact:
+        access_token: "{{ fortios_access_token }}" 
+        selectors:
+          - selector: disk_event_user
+            filters:
+                - log_id==41000
+          - selector: memory_event_user
