@@ -1,0 +1,20 @@
+---
+- name: Configurer des VIPs FortiGate
+  hosts: fortigate1
+  connection: httpapi
+  gather_facts: no
+  collections:
+    - fortinet.fortios
+
+  tasks:
+    - name: add vip 
+      fortios_firewall_vip:
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
+        firewall_vip:
+          name: "VIP"
+          extip: "20.20.20.4"
+          mappedip:
+            - range: "172.29.1.12"
+          extintf: "port3"
+          type: "static-nat"
