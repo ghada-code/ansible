@@ -21,4 +21,34 @@
           role: "lan"
           snmp_index: 1
           status: "down"
+    - name: Configurer interface port2
+      fortios_system_interface:
+        state: "present"
+        access_token: "{{ fortios_access_token }}" 
+        system_interface:
+          name: "port2"
+          mode: "dhcp"
+          allowaccess: ["ping","https","ssh","http","fgfm"]
+          type: "physical"
+          alias: "wan"
+          device_identification: "enable"
+          lldp_transmission: "enable"
+          role: "wan"
+          snmp_index: 2
+          status: "down"
+    - name: Configure port3 
+      fortios_system_interface:
+        access_token: "{{ fortios_access_token }}"
+        state: "present"
+        system_interface:
+          name: "port3"
+          ip: "20.20.20.2 255.255.255.0"
+          allowaccess: ["ping", "https", "fgfm"]
+          type: "physical"
+          alias: "wan"
+          device_identification: "enable"
+          lldp_reception: "enable"
+          role: "wan"
+          snmp_index: 3
+          status: "down"
 
