@@ -35,7 +35,7 @@
           lldp_transmission: "enable"
           role: "wan"
           snmp_index: 2
-          status: "down"
+          status: "up"
     - name: Configure port3 
       fortios_system_interface:
         access_token: "{{ fortios_access_token }}"
