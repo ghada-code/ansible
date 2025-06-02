@@ -1,26 +1,17 @@
 ---
 - name: Configure FortiGate via API
-  hosts: all
+  hosts: fortigate1
   gather_facts: no
   connection: httpapi
 
   collections:
     - fortinet.fortios
 
-  vars:
-    fortios_access_token: "{{ lookup('env', 'FORTIOS_ACCESS_TOKEN') }}"
-    ansible_connection: httpapi
-    ansible_network_os: fortinet.fortios.fortios
-    ansible_httpapi_port: 80
-    ansible_httpapi_use_ssl: no
-    ansible_httpapi_validate_certs: false
 
   tasks:
     - name: Create a basic firewall policy
       fortios_firewall_policy:
-        vdom: "root" 
         state: "absent"
-        access_token: "{{ fortios_access_token }}" 
         firewall_policy:
           policyid: 7
           name: "allow_web122"
