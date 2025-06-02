@@ -6,13 +6,13 @@
   collections:
     - fortinet.fortios
   tasks:
-    - name: Configurer interface port4
+    - name: Configurer interface port1
       fortios_system_interface:
         state: "present"
         access_token: "{{ fortios_access_token }}" 
         system_interface:
-          name: "port4"
-          ip: "172.29.3.1 255.255.255.0"
+          name: "port1"
+          ip: "172.29.1.1 255.255.255.0"
           allowaccess: ["ping","https","ssh","http","fgfm"]
           type: "physical"
           alias: "Site1"
