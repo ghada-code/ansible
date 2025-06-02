@@ -8,7 +8,7 @@
   tasks:
     - name: Configurer interface port4
       fortios_system_interface:
-        state: "present"
+        state: "absent"
         access_token: "{{ fortios_access_token }}" 
         system_interface:
           name: "port4"
