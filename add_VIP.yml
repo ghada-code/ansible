@@ -12,9 +12,9 @@
         access_token: "{{ fortios_access_token }}" 
         state: "present"
         firewall_vip:
-          name: "vip"
-          extip: "20.20.20.5"
+          name: "mail"
+          extip: "20.20.20.4"
           mappedip:
-            - range: "172.29.1.14"
+            - range: "172.29.1.12"
           extintf: "port3"
           type: "static-nat"
