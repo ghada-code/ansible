@@ -75,7 +75,8 @@
 
     - name: Politique dnat
       fortios_firewall_policy:
-        state: present
+        access_token: "{{ fortios_access_token }}" 
+        state: "present"
         firewall_policy:
           policyid: 4
           name: "dnat"
