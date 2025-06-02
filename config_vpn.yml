@@ -21,7 +21,7 @@
           psksecret: "chiffre"
 
 - name: Configurer VPN IPsec phase2
-  hosts: fortigate
+  hosts: fortigate1
   connection: httpapi
   gather_facts: no
   collections:
