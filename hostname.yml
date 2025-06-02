@@ -14,3 +14,4 @@
         access_token: "{{ fortios_access_token }}"
         system_global:
           hostname: "SITE1-FG"
+          gui_theme: "jade"
