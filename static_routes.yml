@@ -22,4 +22,5 @@
         router_static:
           seq_num: "2"
           dst: "0.0.0.0 0.0.0.0"
+          gateway: "20.20.20.1"
           device: "port3"
