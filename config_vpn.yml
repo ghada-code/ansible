@@ -4,18 +4,10 @@
   gather_facts: no
   collections:
     - fortinet.fortios
-  vars:
-    fortios_access_token: "{{ lookup('env','FORTIOS_ACCESS_TOKEN') }}"
-    ansible_network_os: fortinet.fortios.fortios
-    ansible_connection: httpapi
-    ansible_httpapi_port: 80
-    ansible_httpapi_use_ssl: no
-    ansible_httpapi_validate_certs: false
     
   tasks:
     - name: Phase1 interface to_FW2
       fortios_vpn_ipsec_phase1_interface:
-        vdom: "root"
         state: "present"
         access_token: "{{ fortios_access_token }}"
         vpn_ipsec_phase1_interface:
@@ -37,8 +29,7 @@
   tasks:
     - name: Phase2 interface to_FW2
       fortinet.fortios_vpn_ipsec_phase2_interface:
-        vdom: "root"
-        state: present
+        state: "present"
         vpn_ipsec_phase2_interface:
           name: "to_FW2"
           phase1name: "to_FW2"
