@@ -13,15 +13,21 @@
         firewall_policy:
           policyid: 1
           name: "ALLOW_NET"
-          srcintf: "port1"
-          dstintf: "port2"
+          srcintf:
+            - name: "port1"
+          dstintf:
+            - name: "port2"
+          srcaddr:
+            - name: "all"
+          dstaddr:
+            - name: "all"
           action: "accept"
-          srcaddr: ["all"]
-          dstaddr: ["all"]
           schedule: "always"
-          service: ["ALL"]
+          service:
+            - name: "ALL"
           logtraffic: "all"
           nat: "enable"
+
 
     - name: Politique VPN1
       fortios_firewall_policy:
@@ -30,13 +36,19 @@
         firewall_policy:
           policyid: 2
           name: "VPN1"
-          srcintf: "port1"
-          dstintf: "to_FW2"
+          srcintf:
+            - name: "port1"
+          dstintf:
+            - name: "to_FW2"
+          srcaddr:
+            - name: "port1 address"
+          dstaddr:
+            - name: "Site2"
           action: "accept"
-          srcaddr: ["port1 address"]
-          dstaddr: ["Site2"]
           schedule: "always"
-          service: ["ALL"]
+          service:
+            - name: "ALL"
+          logtraffic: "all"
           nat: "disable"
 
     - name: Politique vpnrev
@@ -46,27 +58,38 @@
         firewall_policy:
           policyid: 3
           name: "vpnrev"
-          srcintf: "to_FW2"
-          dstintf: "port1"
+          srcintf:
+            - name: "to_FW2"
+          dstintf:
+            - name: "port1"
+          srcaddr:
+            - name: "Site2"
+          dstaddr:
+            - name: "port1 address"
           action: "accept"
-          srcaddr: ["Site2"]
-          dstaddr: ["port1 address"]
           schedule: "always"
-          service: ["ALL"]
+          service:
+            - name: "ALL"
+          logtraffic: "all"
           nat: "disable"
 
     - name: Politique dnat
       fortios_firewall_policy:
-        vdom: "root"
         state: present
         firewall_policy:
           policyid: 4
           name: "dnat"
-          srcintf: "port3"
-          dstintf: "port1"
+          srcintf:
+            - name: "port3"
+          dstintf:
+            - name: "port1"
+          srcaddr:
+            - name: "all"
+          dstaddr:
+            - name: "mail"
           action: "accept"
-          srcaddr: ["all"]
-          dstaddr: ["mail"]
           schedule: "always"
-          service: ["ALL"]
+          service:
+            - name: "ALL"
+          logtraffic: "all"
           nat: "disable"
