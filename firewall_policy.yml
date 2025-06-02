@@ -11,7 +11,7 @@
   tasks:
     - name: Create a basic firewall policy
       fortios_firewall_policy:
-        state: "absent"
+        state: "present"
         access_token: "{{ fortios_access_token }}" 
         firewall_policy:
           policyid: 7
