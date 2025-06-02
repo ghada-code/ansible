@@ -1,5 +1,5 @@
 ---
-- name: Configure FortiGate via API
+- name: EVENTS
   hosts: fortigate1
   gather_facts: no
   connection: httpapi
@@ -8,13 +8,13 @@
     - fortinet.fortios
 
   tasks:
-    - name: Create a basic firewall policy
+    - name: disk_event_user_logs
       fortios_log_fact:
         access_token: "{{ fortios_access_token }}" 
         selectors:
-          - selector: memory_event_vpn
-      register: disk_logs
+          - selector: disk_event_user
+      register: disk_event_user_logs
 
     - name: Print disk event logs
       debug:
-        var: disk_logs
+        var: disk_event_user_logs
