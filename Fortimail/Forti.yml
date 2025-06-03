@@ -24,7 +24,7 @@
     
     - name: Get available endpoints (discovery)
       uri:
-        url: "https://20.20.20.4/api/v2/"
+        url: "https://20.20.20.4/api/v1/"
         method: GET
         headers:
           Cookie: "{{ fm_cookie }}"
