@@ -1,6 +1,7 @@
 - hosts: fortimail1
   gather_facts: no
-
+  vars:
+    new_hostname: "fortimail-demo"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -21,26 +22,16 @@
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
 
-    - name: Add domain to FortiMail
+    - name: Change FortiMail hostname
       uri:
-        url: "https://20.20.20.4/api/v1/Domain/domain.local"
-        method: POST
+        url: "https://{{ fortimail_ip }}/api/v1/System/Hostname"
+        method: PUT
         headers:
           Content-Type: application/json
           Cookie: "{{ fm_cookie }}"
         body:
-          mkey: "domain.local"
-          ip: "192.168.111.122"
-          port: 25
-          is_subdomain: false
-          maindomain: "domain.local"
-          mxflag: 0
-          is_association: false
-          is_service_domain: false
-          recipient_verification: "SMTP"
-          ec_status: true
-          failed_time: 1
+          hostname: "{{ new_hostname }}"
         body_format: json
         validate_certs: no
         status_code: [200, 201]
-      register: domain_add_response
+      register: hostname_change_response
