@@ -1,40 +1,23 @@
 - hosts: fortimail1
   gather_facts: no
   vars:
-    fortimail_api_base: "https://{{ ansible_host }}/api/v1"
-    api_timeout: 30
-
+    new_hostname: "fortimail-demo"
   tasks:
-    - name: Authenticate and get session token
+    - name: Login to FortiMail and get session cookie
       uri:
-        url: "{{ fortimail_api_base }}/auth/login"
+        url: "https://20.20.20.4/api/v1/AdminLogin"
         method: POST
+        headers:
+          Content-Type: application/json
         body:
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
+          name: "admin"
+          password: "admin"
         body_format: json
         validate_certs: no
-        timeout: "{{ api_timeout }}"
-      register: auth_result
-      no_log: false  # Hides credentials in logs
+        return_content: yes
+        status_code: 200
+      register: login_response
 
-    - name: Set session token
+    - name: Extract session cookie
       set_fact:
-        api_token: "{{ auth_result.json.token }}"
-
-    - name: Get system status (example API call)
-      uri:
-        url: "{{ fortimail_api_base }}/monitor/system/status"
-        method: GET
-        headers:
-          Authorization: "Bearer {{ api_token }}"
-        validate_certs: no
-        timeout: "{{ api_timeout }}"
-      register: system_status
-
-    - name: Display status
-      debug:
-        var: system_status.json
-
-
-
+        fm_cookie: "{{ login_response.set_cookie }}"
