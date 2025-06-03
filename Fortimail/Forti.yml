@@ -1,13 +1,8 @@
 ---
 - hosts: localhost
   gather_facts: no
-  vars:
-    fortimail_ip: "20.20.20.2"
-    fortimail_user: "admin"
-    fortimail_pass: "admin"
-    new_hostname: "new-fortimail-hostname"
-    domain_name: "domain2.local"
-    domain_ip: "192.168.52.137"
+
+
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -30,17 +25,17 @@
 
     - name: Add domain to FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/Domain/{{ domain_name }}"
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/domain"
         method: POST
         headers:
           Content-Type: application/json
           Cookie: "{{ fm_cookie }}"
         body:
-          mkey: "{{ domain_name }}"
-          ip: "{{ domain_ip }}"
+          mkey: "domain"
+          ip: "192.168.111.122"
           port: 25
           is_subdomain: false
-          maindomain: "{{ domain_name }}"
+          maindomain: "domain"
           mxflag: 0
           is_association: false
           is_service_domain: false
