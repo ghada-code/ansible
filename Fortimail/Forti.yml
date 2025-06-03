@@ -24,7 +24,7 @@
 
     - name: Change FortiMail hostname
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/System/Hostname"
+        url: "https://20.20.20.4/api/v1/System/Hostname"
         method: PUT
         headers:
           Content-Type: application/json
