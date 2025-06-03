@@ -5,13 +5,13 @@
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
-        url: "https://20.20.20.4/api/v1/AdminLogin"
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
         method: POST
         headers:
           Content-Type: application/json
         body:
-          name: "admin"
-          password: "admin"
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
         body_format: json
         validate_certs: no
         return_content: yes
