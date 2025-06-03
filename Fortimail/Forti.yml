@@ -21,3 +21,18 @@
     - name: Extract session cookie
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
+    - name: Get FortiMail version
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SystemStatus"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: version_response
+
+    - name: Show FortiMail version
+      debug:
+        msg: "FortiMail version is: {{ version_response.json.version }}"
