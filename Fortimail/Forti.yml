@@ -11,8 +11,8 @@
         headers:
           Content-Type: application/json
         body:
-          name: "{{ fortimail_user }}"
-          password: "{{ fortimail_pass }}"
+          name: "admin"
+          password: "admin"
         body_format: json
         validate_certs: no
         return_content: yes
@@ -25,7 +25,7 @@
 
     - name: Add domain to FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/Domain/domain"
+        url: "https://20.20.20.4/api/v1/Domain/domain"
         method: POST
         headers:
           Content-Type: application/json
