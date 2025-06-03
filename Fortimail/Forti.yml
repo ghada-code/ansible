@@ -22,16 +22,16 @@
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
     
-    - name: Change FortiMail hostname
+    - name: Get available endpoints (discovery)
       uri:
-        url: "https://20.20.20.4/api/v2/cmdb/system/global"
-        method: PUT
+        url: "https://20.20.20.4/api/v2/"
+        method: GET
         headers:
-          Content-Type: "application/json"
           Cookie: "{{ fm_cookie }}"
-        body:
-          hostname: "{{ new_hostname }}"
-        body_format: json
         validate_certs: no
-        status_code: 200
-      register: hostname_change_response
+        return_content: yes
+      register: api_discovery
+    - name: Debug available endpoints
+      debug:
+        var: api_discovery.json
+          
