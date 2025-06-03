@@ -22,8 +22,8 @@
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
     
-   - name: Change hostname
-        ansible.builtin.shell: |
-          config system global
-          set hostname {{ new_hostname }}
-          end
+    - name: Change hostname
+      ansible.builtin.shell: |
+        config system global
+        set hostname {{ new_hostname }}
+        end
