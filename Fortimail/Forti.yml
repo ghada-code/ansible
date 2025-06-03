@@ -22,16 +22,8 @@
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
     
-    - name: Change hostname via system/settings (FortiMail v1 API)
-      uri:
-        url: "https://20.20.20.4/api/v1/system/settings"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-          Cookie: "{{ fm_cookie }}"
-        body:
-          hostname: "{{ new_hostname }}"
-        body_format: json
-        validate_certs: no
-        status_code: 200
-      register: hostname_change_response
+   - name: Change hostname
+        ansible.builtin.shell: |
+          config system global
+          set hostname {{ new_hostname }}
+          end
