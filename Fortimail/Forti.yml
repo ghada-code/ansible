@@ -5,13 +5,13 @@
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
-        url: "https://{{ansible_host}}/api/v1/AdminLogin"
+        url: "https://20.20.20.4/api/v1/AdminLogin"
         method: POST
         headers:
           Content-Type: application/json
         body:
-          name: "{{ansible_user}}"
-          password: "{{ansible_password}}"
+          name: "admin"
+          password: "admin"
         body_format: json
         validate_certs: no
         return_content: yes
