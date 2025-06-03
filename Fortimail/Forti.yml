@@ -16,7 +16,7 @@
         validate_certs: no
         timeout: "{{ api_timeout }}"
       register: auth_result
-      no_log: true  # Hides credentials in logs
+      no_log: false  # Hides credentials in logs
 
     - name: Set session token
       set_fact:
