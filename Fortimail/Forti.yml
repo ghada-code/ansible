@@ -36,3 +36,15 @@
     - name: Show FortiMail version
       debug:
         var: version_info.json
+    - name: Change FortiMail hostname
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SysGlobal/"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          hostname: "{{ new_hostname }}"
+        validate_certs: no
+        status_code: 200
