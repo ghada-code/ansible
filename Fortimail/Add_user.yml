@@ -37,4 +37,16 @@
     - name: Show available domains
       debug:
         var: domain_list.json
+    - name: List recipient policies with PolicyRcpt
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRcpt/"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: no
+      register: policy_list
+    
+    - name: Show recipient policy list
+      debug:
+        var: policy_list.json
 
