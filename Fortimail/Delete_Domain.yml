@@ -20,20 +20,20 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: delete domain to FortiMail
+    - name: Add domain to FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/Domain/site1.com"
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/example.com"
         method: DELETE
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body_format: json
         body:
-          mkey: "site1.com"
-          ip: "172.29.1.10"
+          mkey: "example.com"
+          ip: "192.168.111.122"
           port: 25
           is_subdomain: false
-          maindomain: "site1.com"
+          maindomain: "example.com"
           mxflag: 0
           is_association: false
           is_service_domain: false
