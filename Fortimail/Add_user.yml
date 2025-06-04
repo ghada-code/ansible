@@ -33,9 +33,9 @@
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-          validate_certs: no
-          return_content: yes
-          status_code: [200,201]
+        validate_certs: no
+        return_content: yes
+        status_code: [200,201]
       register: user_list
     
     - name: Show example user structure
