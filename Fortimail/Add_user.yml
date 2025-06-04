@@ -25,19 +25,15 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Update recipient policy with AntiSpam profile
+    - name: List recipient policies for site1.com
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRecipient/1"
-        method: PUT
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRecipient/"
+        method: GET
         headers:
-          Authorization: "{{ fm_cookie_string }}"
-          Content-Type: "application/json"
-        body_format: json
-        body:
-          antispam_profile: "spf"
+          Cookie: "{{ fm_cookie_string }}"
         validate_certs: no
-      register: result
-
-    - name: Show FortiMail response
+      register: policy_list
+    
+    - name: Show policies
       debug:
-        var: result.json
+        var: policy_list.json
