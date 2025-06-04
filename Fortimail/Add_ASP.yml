@@ -38,5 +38,5 @@
             "dictionary_type": 1,
             "minimum_dictionary_score": 1
           }
-        status_code: 201
+        status_code: [200,201]
 
