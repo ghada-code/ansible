@@ -25,23 +25,19 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Create new user via FortiMail API
+    - name: Update recipient policy with AntiSpam profile
       uri:
-        url: "https://{{ fortimail_ip }}/UserMail/"
-        method: POST
+        url: "https://{{ fortimail_ip }}//api/v1/domain/site1.com/PolicyRecipient/1"
+        method: PUT
         headers:
+          Authorization: "{{ fm_cookie_string }}"
           Content-Type: "application/json"
-          Authorization: "Bearer {{ fm_cookie_string }}"
         body_format: json
         body:
-          name: "{{ new_user }}"
-          password: "GhadaSecure2025"
-          domain: "site1.com"
-          full_name: "Ghada"
-          status: "enable"
+          antispam_profile: "spf"
         validate_certs: no
       register: result
 
-    - name: Debug response
+    - name: Show FortiMail response
       debug:
         var: result.json
