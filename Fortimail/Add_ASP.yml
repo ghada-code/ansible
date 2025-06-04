@@ -32,7 +32,7 @@
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body:
-          bannedword: false
+          bannedword: true
           spf_checking: true
           spf_pass_status: true
           action_spf_pass: "pass"
