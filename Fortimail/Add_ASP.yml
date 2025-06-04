@@ -42,3 +42,4 @@
           spf_pass_status: "{{ current_profile.json.spf_pass_status }}"
           action_spf_pass: "{{ current_profile.json.action_spf_pass }}"
           action_spf_soft_fail: "{{ current_profile.json.action_spf_soft_fail }}"
+          bannedword: "{{ current_profile.json.bannedword }}"
