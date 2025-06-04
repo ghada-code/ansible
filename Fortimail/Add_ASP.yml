@@ -38,6 +38,7 @@
         body_format: json
         validate_certs: no
         status_code: 200
+      register: current_profile
     - name: Debug SPF settings from profile (before update)
       debug:
         msg:
