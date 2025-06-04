@@ -1,5 +1,8 @@
 - hosts: fortimail1
   gather_facts: no
+  vars:
+    domain: "site1.com"
+    profile: "spf_copy"
 
   tasks:
     - name: Login to FortiMail and get session cookie
@@ -21,24 +24,43 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Update Antispam profile
+    - name: Get current antispam profile
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: current_profile
+
+    - name: Set updated profile data
+      set_fact:
+        updated_profile: >-
+          {{
+            current_profile.json | combine({
+              "comment": "Updated via Ansible",
+              "spf_checking": true,
+              "spf_fail_status": true,
+              "spf_soft_fail_status": true,
+              "spf_neutral_status": true,
+              "spf_none_status": true,
+              "spf_perm_error_status": true,
+              "spf_temp_error_status": true,
+              "spf_pass_status": true,
+              "spf_sender_alignment_status": true
+            })
+          }}
+
+    - name: PUT updated antispam profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
         method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: "application/json"
         validate_certs: no
         body_format: json
-        body:
-          comment: "SPF enabled via Ansible"
-          spf_checking: false
-          spf_fail_status: true
-          spf_soft_fail_status: true
-          spf_neutral_status: true
-          spf_none_status: true
-          spf_perm_error_status: true
-          spf_temp_error_status: true
-          spf_pass_status: true
-          spf_sender_alignment_status: true
+        body: "{{ updated_profile }}"
         status_code: [200, 201]
