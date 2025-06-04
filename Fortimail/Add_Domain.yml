@@ -20,7 +20,7 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Add a domain to FortiMail
+    - name: Add domain to FortiMail
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/"
         method: POST
@@ -29,19 +29,25 @@
           Content-Type: application/json
         body_format: json
         body:
-          domain: "site2.com"
-          ip: "172.29.1.20"  # adresse IP différente du domaine existant
-          type: "virtual"
-          profile: "default"  # ou un profil réel existant sur ta config
-          smtp_enabled: true
+          mkey: "{{ new_domain }}"
+          ip: "{{ new_ip }}"
           port: 25
+          is_subdomain: false
+          maindomain: "{{ new_domain }}"
+          mxflag: 0
+          is_association: false
+          is_service_domain: false
+          recipient_verification: "SMTP"
+          ec_status: true
+          failed_time: 1
         validate_certs: no
         status_code: [200, 201]
       register: add_domain_response
-    
-    - name: Debug response of domain creation
+
+    - name: Show result
       debug:
         var: add_domain_response
+
 
     - name: Get list of domains from FortiMail
       uri:
