@@ -35,8 +35,16 @@
             "mkey": "spf_copy",
             "comment": "Auto-created via API",
             "mdomain": "site1.com",
-            "dictionary_type": 1,
-            "minimum_dictionary_score": 1
+            "spf_check": true,
+            "spf_check_action": "tag",          # or "reject", "discard", etc.
+            "spf_check_score": 3,
+            "rbl_check": true,
+            "rbl_check_score": 2,
+            "spam_tag_action": "tag",           # action if spam is tagged
+            "spam_action": "reject",            # action if high spam score
+            "spam_score_threshold": 5,
+            "header_check": true,
+            "header_check_score": 1
           }
         status_code: [200,201]
 
