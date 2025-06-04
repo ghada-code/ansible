@@ -30,9 +30,9 @@
         return_content: yes
       register: profile_details
 
-- name: Show profile fields
-  debug:
-    var: profile_details.json
+    - name: Show profile fields
+      debug:
+        var: profile_details.json
     - name: Update Antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
