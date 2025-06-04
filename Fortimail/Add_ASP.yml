@@ -24,26 +24,28 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Create a new antispam profile on FortiMail
+    - name: Update the antispam profile with custom settings
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ new_profile_name }}"
-        method: POST
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/spf_copyyy"
+        method: PUT
         headers:
-          Content-Type: application/json
           Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
         body:
-          name: "{{ new_profile_name }}"
-          scan_direction: "incoming"        # REQUIRED: incoming, outgoing, or both
+          bannedword: false
           spf_checking: true
           spf_pass_status: true
-          action_spf_pass: "accept"
-          action_spf_soft_fail: "tag"
-          bannedword: true
+          action_spf_pass: "pass"
+          action_spf_soft_fail: "discard"
+          # Add more fields as needed
         body_format: json
         validate_certs: no
+        return_content: yes
         status_code: 200
-      register: create_profile_response
+      register: update_response
+
+    
     - name: Show raw create_profile_response
       debug:
-        var: create_profile_response
+        var: update_response
 
