@@ -23,7 +23,7 @@
 
     - name: Create Antispam profile
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
@@ -32,7 +32,7 @@
         body_format: json
         body: >
           {
-            "mkey": "myprofile",
+            "mkey": "spf_copy",
             "comment": "Auto-created via API",
             "mdomain": "site1.com",
             "dictionary_type": 1,
