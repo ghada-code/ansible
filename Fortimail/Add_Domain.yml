@@ -22,18 +22,18 @@
 
     - name: Add domain to FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/Domain/example.com"
-        method: POST
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/site1.com"
+        method: put
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body_format: json
         body:
-          mkey: "example.com"
-          ip: "192.168.111.122"
+          mkey: "site1.com"
+          ip: "172.29.1.10"
           port: 25
           is_subdomain: false
-          maindomain: "example.com"
+          maindomain: "site1.com"
           mxflag: 0
           is_association: false
           is_service_domain: false
@@ -42,5 +42,3 @@
           failed_time: 1
         validate_certs: no
         status_code: [200, 201]
-
-
