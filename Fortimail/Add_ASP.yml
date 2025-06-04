@@ -2,7 +2,7 @@
   gather_facts: no
   vars:
     domain: "site1.com"
-    profile: "spf_copyy"
+    new_profile_name: "spf_copyy"
 
   tasks:
     - name: Login to FortiMail and get session cookie
@@ -24,26 +24,21 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Update antispam profile to enable bannedword and set SPF actions
+    - name: Create a new antispam profile on FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
-        method: PUT
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ new_profile_name }}"
+        method: POST
         headers:
           Content-Type: application/json
           Cookie: "{{ fm_cookie_string }}"
         body:
+          name: "{{ new_profile_name }}"           # e.g. spf_custom
+          spf_checking: true
+          spf_pass_status: true
+          action_spf_pass: "accept"                # Or other supported values
+          action_spf_soft_fail: "tag"              # Or "reject", "discard", etc.
           bannedword: true
-          action_spf_pass: "reject"
-          action_spf_soft_fail: "reject"
         body_format: json
         validate_certs: no
         status_code: 200
-      register: current_profile
-    - name: Debug SPF settings from profile (before update)
-      debug:
-        msg:
-          spf_checking: "{{ current_profile.json.spf_checking }}"
-          spf_pass_status: "{{ current_profile.json.spf_pass_status }}"
-          action_spf_pass: "{{ current_profile.json.action_spf_pass }}"
-          action_spf_soft_fail: "{{ current_profile.json.action_spf_soft_fail }}"
-          bannedword: "{{ current_profile.json.bannedword }}"
+      register: create_profile_response
