@@ -2,7 +2,7 @@
   gather_facts: no
   vars:
     domain: "site1.com"
-    new_profile_name: "spf_copyy"
+    new_profile_name: "spf_copyyy"
 
   tasks:
     - name: Login to FortiMail and get session cookie
