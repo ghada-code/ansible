@@ -26,14 +26,16 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Add new user 
+    - name: get user info
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/UserMail/ghada"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-    
+          validate_certs: no
+          return_content: yes
+          status_code: [200,201]
       register: user_list
     
     - name: Show example user structure
