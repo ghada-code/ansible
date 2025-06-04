@@ -22,7 +22,7 @@
 
     - name: Add domain to FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/"
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
