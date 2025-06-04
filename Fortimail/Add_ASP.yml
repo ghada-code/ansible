@@ -34,6 +34,13 @@
         return_content: yes
         status_code: 200
       register: current_profile
+    - name: Debug SPF settings from profile
+      debug:
+        msg:
+          spf_checking: "{{ current_profile.json.spf_checking }}"
+          spf_fail_status: "{{ current_profile.json.spf_fail_status }}"
+          spf_pass_status: "{{ current_profile.json.spf_pass_status }}"
+          spf_sender_alignment_status: "{{ current_profile.json.spf_sender_alignment_status }}"
 
     - name: Set updated profile data
       set_fact:
