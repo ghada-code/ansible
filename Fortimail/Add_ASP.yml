@@ -24,17 +24,7 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Get current antispam profile
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: no
-        return_content: yes
-        status_code: 200
-      register: current_profile
-    - name: Enable bannedword in antispam profile
+    - name: Update antispam profile to enable bannedword and set SPF actions
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
         method: PUT
@@ -43,6 +33,8 @@
           Cookie: "{{ fm_cookie_string }}"
         body:
           bannedword: true
+          action_spf_pass: "reject"
+          action_spf_soft_fail: "reject"
         body_format: json
         validate_certs: no
         status_code: 200
