@@ -24,7 +24,7 @@
     - name: Create Antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
-        method: POST
+        method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: "application/json"
