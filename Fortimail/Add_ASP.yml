@@ -44,7 +44,7 @@
         body_format: json
         body:
           comment: "SPF enabled via Ansible"
-          spf_checking: true
+          spf_checking: false
           spf_fail_status: true
           spf_soft_fail_status: true
           spf_neutral_status: true
