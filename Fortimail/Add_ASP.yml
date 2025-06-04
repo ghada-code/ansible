@@ -25,7 +25,7 @@
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/"
         method: POST
         headers:
-          Cookie: "{{ fm_cookie }}"
+          Cookie: "{{ fm_cookie_string }}"
           Content-Type: "application/json"
         body:
           mkey: "my_antispam_profile"
