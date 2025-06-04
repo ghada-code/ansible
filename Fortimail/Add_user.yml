@@ -25,17 +25,23 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Try a harmless API call
+    - name: Create new user via FortiMail API
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/system/status"
-        method: GET
+        url: "https://{{ fortimail_ip }}/UserMail/"
+        method: POST
         headers:
-          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ fm_cookie_string }}"
+        body_format: json
+        body:
+          name: "{{ new_user }}"
+          password: "GhadaSecure2025"
+          domain: "site1.com"
+          full_name: "Ghada"
+          status: "enable"
         validate_certs: no
-        return_content: yes
-        status_code: 200
-      register: system_status
-    
-    - debug:
-        var: system_status
-    
+      register: result
+
+    - name: Debug response
+      debug:
+        var: result.json
