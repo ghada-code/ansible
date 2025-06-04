@@ -29,18 +29,20 @@
           Content-Type: application/json
         body_format: json
         body:
-          domain: "example.com"
-          ip: "192.168.111.100"
+          domain: "site2.com"
+          ip: "172.29.1.20"  # adresse IP différente du domaine existant
           type: "virtual"
-          profile: "default"
+          profile: "default"  # ou un profil réel existant sur ta config
           smtp_enabled: true
           port: 25
         validate_certs: no
         status_code: [200, 201]
       register: add_domain_response
-    - name: Show domain addition response
+    
+    - name: Debug response of domain creation
       debug:
         var: add_domain_response
+
     - name: Get list of domains from FortiMail
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/"
