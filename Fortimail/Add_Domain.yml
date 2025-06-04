@@ -31,7 +31,8 @@
         body:
           domain: "example.com"
         validate_certs: no
-        status_code: 201
+        status_code: [200, 201, 204]
+      register: smtp_config_result
     - name: Debug SMTP config failure
       debug:
         var: smtp_config_result
