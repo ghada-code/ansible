@@ -1,5 +1,12 @@
 - hosts: fortimail1
   gather_facts: no
+  vars:
+    antispam_profile:
+      mkey: "myprofile"
+      comment: "Profile created by Ansible"
+      dictionary_type: 1
+      minimum_dictionary_score: 2
+      mdomain: "site1.com"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -20,19 +27,19 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Create Antispam profile for domain2.local
+    - name: Create Antispam profile
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/my_antispam_profile"
+        url: "https://{{ fortimail_ip }}/api/v1/ProfAntispam/"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: "application/json"
-        body:
-          mkey: "my_antispam_profile"
-          comment: "Created via API"
-          minimum_dictionary_score: 2
-          dictionary_type: 1
+        body: "{{ antispam_profile }}"
         body_format: json
-        validate_certs: no
         status_code: 201
-      register: create_antispam_response
+        validate_certs: no
+      register: create_profile_response
+
+    - name: Show result
+      debug:
+        var: create_profile_response.json
