@@ -32,13 +32,18 @@
           Content-Type: application/json
           Cookie: "{{ fm_cookie_string }}"
         body:
-          name: "{{ new_profile_name }}"           # e.g. spf_custom
+          name: "{{ new_profile_name }}"
+          scan_direction: "incoming"        # REQUIRED: incoming, outgoing, or both
           spf_checking: true
           spf_pass_status: true
-          action_spf_pass: "accept"                # Or other supported values
-          action_spf_soft_fail: "tag"              # Or "reject", "discard", etc.
+          action_spf_pass: "accept"
+          action_spf_soft_fail: "tag"
           bannedword: true
         body_format: json
         validate_certs: no
         status_code: 200
       register: create_profile_response
+    - name: Show raw create_profile_response
+      debug:
+        var: create_profile_response
+
