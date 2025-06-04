@@ -67,10 +67,10 @@
           spf_none_status: true
           spf_perm_error_status: true
           spf_temp_error_status: true
-          action_spf_fail: "quarantine"     # Exemple d'action
+          action_spf_fail: "quarantine"
+          action_spf_none: "none"
           action_spf_pass: "none"
           action_spf_soft_fail: "tag"
-          action_spf_none: "none"
         status_code: [200, 201]
 
     - name: Get updated antispam profile
