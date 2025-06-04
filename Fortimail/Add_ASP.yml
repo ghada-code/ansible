@@ -23,11 +23,16 @@
     - name: Create Antispam profile for domain2.local
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/"
-        method: GET
+        method: POST
         headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: false
-      register: list_profiles
-    
-    - debug:
-        var: list_profiles.json
+          Cookie: "{{ fm_cookie }}"
+          Content-Type: "application/json"
+        body:
+          mkey: "my_antispam_profile"
+          comment: "Created via API"
+          minimum_dictionary_score: 2
+          dictionary_type: 1
+        body_format: json
+        validate_certs: no
+        status_code: 201
+      register: create_antispam_response
