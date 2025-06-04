@@ -39,10 +39,6 @@
       debug:
         msg:
           spf_checking: "{{ current_profile.json.spf_checking }}"
-          spf_fail_status: "{{ current_profile.json.spf_fail_status }}"
           spf_pass_status: "{{ current_profile.json.spf_pass_status }}"
-          spf_sender_alignment_status: "{{ current_profile.json.spf_sender_alignment_status }}"
-          action_spf_fail: "{{ current_profile.json.action_spf_fail }}"
           action_spf_pass: "{{ current_profile.json.action_spf_pass }}"
           action_spf_soft_fail: "{{ current_profile.json.action_spf_soft_fail }}"
-          action_spf_none: "{{ current_profile.json.action_spf_none }}"
