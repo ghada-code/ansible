@@ -34,7 +34,18 @@
         return_content: yes
         status_code: 200
       register: current_profile
-
+    - name: Enable bannedword in antispam profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ profile }}"
+        method: PUT
+        headers:
+          Content-Type: application/json
+          Cookie: "{{ fm_cookie_string }}"
+        body:
+          bannedword: true
+        body_format: json
+        validate_certs: no
+        status_code: 200
     - name: Debug SPF settings from profile (before update)
       debug:
         msg:
