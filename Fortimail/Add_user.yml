@@ -28,7 +28,7 @@
         fm_cookie_string: "{{ login_response.cookies_string }}"
     - name: Add new user 
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/UserMail/"
+        url: "https://{{ fortimail_ip }}/api/v1/UserMail/ghada"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
