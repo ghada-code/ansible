@@ -29,11 +29,11 @@
           Content-Type: application/json
         body_format: json
         body:
-          mkey: "{{ new_domain }}"
-          ip: "{{ new_ip }}"
+          mkey: "example.com"
+          ip: "192.168.111.122"
           port: 25
           is_subdomain: false
-          maindomain: "{{ new_domain }}"
+          maindomain: "example.com"
           mxflag: 0
           is_association: false
           is_service_domain: false
