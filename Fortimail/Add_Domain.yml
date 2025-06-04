@@ -32,7 +32,19 @@
           domain: "example.com"
         validate_certs: no
         status_code: [200, 201, 204]
-      register: smtp_config_result
-    - name: Debug SMTP config failure
+    - name: Get list of domains from FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
+        status_code: 200
+        return_content: yes
+      register: domain_list
+    
+    - name: Afficher la liste des domaines
       debug:
-        var: smtp_config_result
+        var: domain_list.json
+
