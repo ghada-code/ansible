@@ -20,7 +20,19 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
+    - name: Dump Antispam profile details (get correct field names)
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: no
+        return_content: yes
+      register: profile_details
 
+- name: Show profile fields
+  debug:
+    var: profile_details.json
     - name: Update Antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/spf_copy"
