@@ -43,9 +43,14 @@
         validate_certs: no
         body_format: json
         body:
-          comment: "Modified by Ansible"
-          spf_check: true
-          spf_check_score: 3
-          spam_action: "tag"
-          spam_score_threshold: 5
+          comment: "SPF enabled via Ansible"
+          spf_checking: true
+          spf_fail_status: true
+          spf_soft_fail_status: true
+          spf_neutral_status: true
+          spf_none_status: true
+          spf_perm_error_status: true
+          spf_temp_error_status: true
+          spf_pass_status: true
+          spf_sender_alignment_status: true
         status_code: [200, 201]
