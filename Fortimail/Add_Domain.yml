@@ -1,7 +1,5 @@
 - hosts: fortimail1
   gather_facts: no
-  vars:
-    new_hostname: "fortimail-demo"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -21,33 +19,7 @@
     - name: Extract session cookie
       set_fact:
         fm_cookie: "{{ login_response.set_cookie }}"
-    - name: Get FortiMail system version info
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/SysStatusSysinfo/"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie }}"
-          Content-Type: application/json
-        validate_certs: no
-        return_content: yes
-        status_code: 200
-      register: version_info
 
-    - name: Show FortiMail version
-      debug:
-        var: version_info.json
-    - name: Change FortiMail hostname
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/SysGlobal/"
-        method: PUT
-        headers:
-          Cookie: "{{ fm_cookie }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          hostname: "{{ new_hostname }}"
-        validate_certs: no
-        status_code: 200
     - name: Add a domain to FortiMail
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/"
@@ -60,20 +32,6 @@
           domain: "example.com"
         validate_certs: no
         status_code: 201
-    - name: Configure SMTP server for the domain
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/SysMailserver/"
-        method: PUT
-        headers:
-          Cookie: "{{ fm_cookie }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          hostname: "example.com"
-          smtp_port: 25
-          smtps_port: 465
-          smtp_service: true
-          smtps_service: true
-        validate_certs: no
-        status_code: 200
-            
+    - name: Debug SMTP config failure
+      debug:
+        var: smtp_config_result
