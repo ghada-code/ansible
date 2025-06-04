@@ -25,15 +25,16 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: List recipient policies for site1.com
+    - name: Get list of domains
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRecipient/"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
         validate_certs: no
-      register: policy_list
+      register: domain_list
     
-    - name: Show policies
+    - name: Show available domains
       debug:
-        var: policy_list.json
+        var: domain_list.json
+
