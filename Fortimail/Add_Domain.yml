@@ -30,8 +30,17 @@
         body_format: json
         body:
           domain: "example.com"
+          ip: "192.168.111.100"
+          type: "virtual"
+          profile: "default"
+          smtp_enabled: true
+          port: 25
         validate_certs: no
-        status_code: [200, 201, 204]
+        status_code: [200, 201]
+      register: add_domain_response
+    - name: Show domain addition response
+      debug:
+        var: add_domain_response
     - name: Get list of domains from FortiMail
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/"
