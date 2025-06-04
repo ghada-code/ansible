@@ -23,17 +23,17 @@
         status_code: 200
       register: login_response
 
-    - name: Extract session cookie string
-      set_fact:
-        fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Try listing available API objects
+    - name: Try a harmless API call
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/"
+        url: "https://{{ fortimail_ip }}/api/v1/system/status"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
         validate_certs: no
         return_content: yes
-      register: api_root
+        status_code: 200
+      register: system_status
+    
     - debug:
-        var: api_root
+        var: system_status
+    
