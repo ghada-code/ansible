@@ -1,7 +1,7 @@
 - hosts: fortimail1
   gather_facts: no
   vars:
-    domain: "site1.com"
+    domain: "System"
     new_profile_name: "spf_copyyy"
 
   tasks:
@@ -35,9 +35,41 @@
           bannedword: true
           spf_checking: true
           spf_pass_status: true
+          spf_fail_status: true
+          spf_neutral_status: true
+          spf_none_status: true
+          spf_perm_error_status: true
+          spf_sender_alignment_status: true
+          spf_soft_fail_status: true
+          spf_temp_error_status: true
           action_spf_pass: "pass"
-          action_spf_soft_fail: "discard"
-          # Add more fields as needed
+          action_spf_soft_fail: "reject"
+          action_dkim: "pass"
+          action_dkim_none: "pass"
+          action_dkim_pass: "pass"
+          action_dkim_temp_error: "pass"
+          action_dmarc: "pass"
+          action_dmarc_none: "pass"
+          action_dmarc_pass: "pass"
+          action_dmarc_temp_error: "pass"
+          action_spf_fail: "pass"
+          action_spf_neutral: "pass"
+          action_spf_none: "pass"
+          action_spf_pass: "pass"
+          action_spf_perm_error: "pass"
+          action_spf_sender_alignment: "pass"
+          action_spf_soft_fail: "pass"
+          action_spf_temp_error: "pass"
+          dkim_fail_status: true
+          dkim_none_status: true
+          dkim_pass_status: true
+          dkim_status: true
+          dkim_temp_error_status: true
+          dmarc_fail_status: true
+          dmarc_none_status: true
+          dmarc_pass_status: true
+          dmarc_status : true
+          dmarc_temp_error_status : true
         body_format: json
         validate_certs: no
         return_content: yes
