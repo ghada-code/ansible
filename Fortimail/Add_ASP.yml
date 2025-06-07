@@ -55,7 +55,7 @@
           spf_soft_fail_status: true
           spf_temp_error_status: true
           action_spf_pass: "pass"
-          action_spf_soft_fail: "reject"
+          action_spf_soft_fail: "Reject"
           action_dkim: "pass"
           action_dkim_none: "pass"
           action_dkim_pass: "pass"
