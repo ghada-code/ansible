@@ -43,21 +43,21 @@
           spf_soft_fail_status: true
           spf_temp_error_status: true
           action_spf_pass: "pass"
-          action_spf_soft_fail: "Reject"
+          action_spf_soft_fail: "UserQuarantine"
           action_dkim: "pass"
-          action_dkim_none: "pass"
+          action_dkim_none: "UserQuarantine"
           action_dkim_pass: "pass"
-          action_dkim_temp_error: "pass"
+          action_dkim_temp_error: "UserQuarantine"
           action_dmarc: "pass"
-          action_dmarc_none: "pass"
+          action_dmarc_none: "UserQuarantine"
           action_dmarc_pass: "pass"
-          action_dmarc_temp_error: "pass"
-          action_spf_fail: "pass"
-          action_spf_neutral: "pass"
-          action_spf_none: "pass"
-          action_spf_perm_error: "pass"
+          action_dmarc_temp_error: "UserQuarantine"
+          action_spf_fail: "UserQuarantine"
+          action_spf_neutral: "UserQuarantine"
+          action_spf_none: "UserQuarantine"
+          action_spf_perm_error: "UserQuarantine"
           action_spf_sender_alignment: "pass"
-          action_spf_temp_error: "pass"
+          action_spf_temp_error: "UserQuarantine"
           dkim_fail_status: true
           dkim_none_status: true
           dkim_pass_status: true
