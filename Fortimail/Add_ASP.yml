@@ -1,7 +1,7 @@
 - hosts: fortimail1
   gather_facts: no
   vars:
-    domain: "System"
+    domain: "site1.com"
     new_profile_name: "spf_copyyy"
 
   tasks:
