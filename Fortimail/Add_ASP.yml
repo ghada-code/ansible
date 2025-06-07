@@ -55,10 +55,8 @@
           action_spf_fail: "pass"
           action_spf_neutral: "pass"
           action_spf_none: "pass"
-          action_spf_pass: "pass"
           action_spf_perm_error: "pass"
           action_spf_sender_alignment: "pass"
-          action_spf_soft_fail: "pass"
           action_spf_temp_error: "pass"
           dkim_fail_status: true
           dkim_none_status: true
