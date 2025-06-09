@@ -1,0 +1,128 @@
+- name: Manage Antivirus Profile in Recipient Policy
+  hosts: fortimail1
+  gather_facts: no
+
+  vars:
+    domain: "{{ domain }}"
+    policy_id: "{{ policy_id }}"
+    antiv_profile_name: "{{ antiv_profile_name }}"
+    operation: "{{ operation }}"
+
+
+  tasks:
+
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"
+
+    - name: Create antispam profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ antiv_profile_name }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          name: "{{ antiv_profile_name }}"
+          comments: "Profil créé automatiquement"
+        validate_certs: no
+        status_code: 200
+      when: "'add' in operation"
+    - name: Update antiv profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ antiv_profile_name }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          file_signature_check: true
+          fortindr_scan: true
+          grayware_scan: true
+          heuristic: true
+          heuristic_action: "SystemQuarantine"
+          malware_outbreak_protection: true
+          sandbox_analysis: true
+          sandbox_analysis_uri: true
+          sandbox_scan_mode: 0
+          sandbox_url_scan_email_selection: 1
+          scanner: true
+          action_file_signature: "Discard"
+          action_fortindr_high: "Discard"
+          action_fortindr_low: "SystemQuarantine"
+          action_fortindr_medium: "SystemQuarantine"
+          action_fortindr_virus: "Discard"
+          action_outbreak: "SystemQuarantine"
+          action_sandbox_high: "Discard"
+          action_sandbox_low: "SystemQuarantine"
+          action_sandbox_medium: "SystemQuarantine"
+          action_sandbox_noresult: "pass"
+          action_sandbox_uri_high: "Discard"
+          action_sandbox_uri_low: "SystemQuarantine"
+          action_sandbox_uri_medium: "SystemQuarantine"
+          action_sandbox_uri_noresult: "pass"
+          action_sandbox_uri_virus: "Discard"
+          action_sandbox_virus: "Discard"
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'update' in operation"
+
+    - name: Associate antiv profile to recipient policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          antivirus: "{{ antiv_profile_name }}"
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'associate' in operation"
+
+    - name: Dissociate antispam profile from recipient policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          antivirus: ""
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'dissociate' in operation"
+
+    - name: Delete antispam profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ antiv_profile_name }}"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'delete' in operation"
