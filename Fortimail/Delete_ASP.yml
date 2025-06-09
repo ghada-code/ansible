@@ -26,7 +26,7 @@
     - name: delete prfil antispam 
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/{{ profile_name }}"
-        method: POST
+        method: DELETE
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
