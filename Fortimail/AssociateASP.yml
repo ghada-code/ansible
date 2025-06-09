@@ -39,3 +39,21 @@
     - name: Show policy exist
       debug:
         var: policy_check
+    - name: Modify PolicyRcpt to apply antispam profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body:
+          antispam: "{{ profile_name }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: update_response
+
+    - name: Show API response
+      debug:
+        var: update_response
