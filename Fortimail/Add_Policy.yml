@@ -45,7 +45,7 @@
 
     - name: Create IP Policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ next_policy_id }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ next_policy_id | int }}"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
