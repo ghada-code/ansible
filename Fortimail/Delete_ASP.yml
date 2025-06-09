@@ -23,18 +23,17 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: delete prfil antispam 
+    - name: Remove antispam profile from PolicyRecipient rule
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/{{ profile_name }}"
-        method: DELETE
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRecipient/1"
+        method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
+        body:
+          antispam: ""
+        body_format: json
         validate_certs: no
-        status_code: 200
         return_content: yes
-      register: delete_response
-
-    - name: Afficher la réponse
-      debug:
-        var: delete_response        
+        status_code: 200
+      register: remove_antispam_response
