@@ -35,11 +35,7 @@
         body:
           name: "plocy"
           status: "{{ (policy_enabled | default(true)) | ternary('enable', 'disable') }}"
-          # Add additional policy details here, e.g.:
-          # description: "Created via Ansible"
-          # spam_check: true
-          # antivirus_check: true
-          # other fields as per FortiMail API doc
+          profile-resource: "default"
         validate_certs: no
         return_content: yes
         status_code: 200
