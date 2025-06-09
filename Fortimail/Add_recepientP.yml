@@ -51,7 +51,7 @@
         body:
           comment: "Policy created via Ansible"
           recipient_pattern: "*"
-          direction: 2
+          direction: 1
           sender_pattern: "*"
           recipient_domain: "{{ domain }}"
           sender_domain: "*"
