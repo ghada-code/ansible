@@ -24,19 +24,21 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"   
-    - name: Get profile-resource values
+    - name: Get existing recipient policies
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/resource"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
         validate_certs: false
         return_content: yes
-      register: resource_list
+        status_code: 200
+      register: policies
     
-    - name: Show available resources
+    - name: Show policies JSON
       debug:
-        var: resource_list.json
+        var: policies.json
+
 
     - name: Create Recipient Policy
       uri:
