@@ -39,7 +39,7 @@
           recipient_domain: "{{ domain }}"
           sender_domain: "*"
           status: true
-          profile-resource: "Res_Default"  # ✅ Required to avoid error -56
+          profile-resource: "Res_Default@system"  # ✅ Required to avoid error -56
         validate_certs: false
         return_content: yes
         status_code: 200
