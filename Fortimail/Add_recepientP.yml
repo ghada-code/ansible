@@ -26,7 +26,7 @@
         fm_cookie_string: "{{ login_response.cookies_string }}"
     - name: Create Recipient Policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient/2"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
