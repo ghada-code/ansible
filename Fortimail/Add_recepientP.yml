@@ -24,23 +24,17 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Create Recipient Policy
+    - name: Get existing recipient policies
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/2"
-        method: POST
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/1"
+        method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          name: "plocy"
-          status: "{{ (policy_enabled | default(true)) | ternary('enable', 'disable') }}"
-          profile-resource: "default"
         validate_certs: no
         return_content: yes
         status_code: 200
-      register: create_policy_response
-
+      register: recipient_policies
     - name: Show creation response
       debug:
-        var: create_policy_response.json        
+        var: recipient_policies.json        
+
