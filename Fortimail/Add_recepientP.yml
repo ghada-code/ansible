@@ -37,4 +37,27 @@
     - name: Show creation response
       debug:
         var: recipient_policies.json        
+    - name: Create Recipient Policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          id: "{{ policy_id | int }}"
+          comment: "Policy created via Ansible"
+          recipient_pattern: "*"
+          sender_pattern: "*"
+          recipient_domain: "{{ domain }}"
+          sender_domain: "*"
+          status: true
+          antispam: "ghada"
+          antivirus: "ghada"
+          profile-resource: "Res_Default@system"  # ✅ Required to avoid error -56
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: create_policy_response
 
