@@ -30,7 +30,7 @@
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body:
-          antispam: ""
+          antivirus: ""
         body_format: json
         validate_certs: no
         return_content: yes
