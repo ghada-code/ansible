@@ -41,7 +41,7 @@
         var: policy_check
     - name: Associate antivirus profile to recipient policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ policy_id }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
         method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
