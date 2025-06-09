@@ -25,7 +25,7 @@
         fm_cookie_string: "{{ login_response.cookies_string }}"
     - name: Remove antispam profile from PolicyRecipient rule
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRecipient/1"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRcpt/1"
         method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
