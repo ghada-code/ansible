@@ -91,37 +91,44 @@
         status_code: 200
       when: operation == "update"
 
-    - name: Associate Antispam Profile to Recipient Policy
+    - name: Associate antispam profile to recipient policy
       uri:
-        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ recipient_policy_id }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
         method: PUT
         headers:
-          Authorization: "Bearer {{ api_token }}"
-          Content-Type: "application/json"
-        body_format: json
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
         body:
-          antispam: "{{ antispam_profile_name }}"
+          antivirus: "{{ antispam_profile_name }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
         status_code: 200
       when: operation == "associate"
 
-    - name: Dissociate Antispam Profile from Recipient Policy
+    - name: Remove antispam profile from PolicyRecipient rule
       uri:
-        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ recipient_policy_id }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/1"
         method: PUT
         headers:
-          Authorization: "Bearer {{ api_token }}"
-          Content-Type: "application/json"
-        body_format: json
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
         body:
           antispam: ""
+        body_format: json
+        validate_certs: no
+        return_content: yes
         status_code: 200
       when: operation == "dissociate"
 
-    - name: Delete Antispam Profile
+    - name: delete prfil antispam 
       uri:
-        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
         method: DELETE
         headers:
-          Authorization: "Bearer {{ api_token }}"
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
         status_code: 200
+        return_content: yes
       when: operation == "delete"
