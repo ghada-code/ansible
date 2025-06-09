@@ -33,13 +33,14 @@
         validate_certs: false
         return_content: yes
       register: existing_policies_response
-
+    - name: get
+      debug: existing_policies_response
     - name: Calculate next available Policy ID
       set_fact:
         next_policy_id: >-
-          {{
-            (existing_policies_response.json.collection | map(attribute='mkey') | list | default([]) | max(default=0)) + 1
-          }}
+          {% set mkeys = existing_policies_response.json.collection | map(attribute='mkey') | list %}
+          {{ (mkeys | max) + 1 if mkeys | length > 0 else 1 }}
+
     - name: Create IP Policy
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ next_policy_id }}"
