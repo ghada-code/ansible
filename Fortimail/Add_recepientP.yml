@@ -53,7 +53,7 @@
           recipient_pattern: "*"
           sender_pattern: "*"
           recipient_domain: "{{ domain }}"
-          sender_domain: "*"
+          sender_domain: "*@site1.com"
           status: true
           misc: "Res_Default"
         validate_certs: false
