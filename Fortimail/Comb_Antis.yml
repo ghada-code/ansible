@@ -1,13 +1,27 @@
 - name: Manage Antispam Profile in Recipient Policy
   hosts: fortimail1
   gather_facts: no
-  vars:
-    domain: "site1.com"
-    recipient_policy_id: 1
-    antispam_profile_name: "Antispam1"
-    operation: "associate" 
+
+  vars_prompt:
+
+    - name: domain
+      prompt: "Enter the domain name (e.g., site1.com)"
+      private: no
+
+    - name: policy_id
+      prompt: "Enter the recipient policy ID"
+      private: no
+
+    - name: antispam_profile_name
+      prompt: "Enter the antispam profile name"
+      private: no
+
+    - name: operation
+      prompt: "Choose operation: add, update, associate, dissociate, delete"
+      private: no
 
   tasks:
+
     - name: Login to FortiMail and get session cookie
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
@@ -26,9 +40,10 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Crate rofil antispam 
+
+    - name: Create antispam profile
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/{{ antispam_profile_name }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
@@ -41,13 +56,14 @@
         status_code: 200
       when: operation == "add"
 
-    - name: Update the antispam profile 
+    - name: Update antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
         method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
+        body_format: json
         body:
           bannedword: true
           spf_checking: true
@@ -61,31 +77,30 @@
           spf_temp_error_status: true
           action_spf_pass: "pass"
           action_spf_soft_fail: "UserQuarantine"
-          action_dkim: "pass"
-          action_dkim_none: "UserQuarantine"
-          action_dkim_pass: "pass"
-          action_dkim_temp_error: "UserQuarantine"
-          action_dmarc: "pass"
-          action_dmarc_none: "UserQuarantine"
-          action_dmarc_pass: "pass"
-          action_dmarc_temp_error: "UserQuarantine"
           action_spf_fail: "UserQuarantine"
           action_spf_neutral: "UserQuarantine"
           action_spf_none: "UserQuarantine"
           action_spf_perm_error: "UserQuarantine"
           action_spf_sender_alignment: "pass"
           action_spf_temp_error: "UserQuarantine"
-          dkim_fail_status: true
+          action_dkim: "pass"
+          action_dkim_none: "UserQuarantine"
+          action_dkim_pass: "pass"
+          action_dkim_temp_error: "UserQuarantine"
+          dkim_status: true
           dkim_none_status: true
           dkim_pass_status: true
-          dkim_status: true
+          dkim_fail_status: true
           dkim_temp_error_status: true
-          dmarc_fail_status: true
+          action_dmarc: "pass"
+          action_dmarc_none: "UserQuarantine"
+          action_dmarc_pass: "pass"
+          action_dmarc_temp_error: "UserQuarantine"
+          dmarc_status: true
           dmarc_none_status: true
           dmarc_pass_status: true
-          dmarc_status : true
-          dmarc_temp_error_status : true
-        body_format: json
+          dmarc_fail_status: true
+          dmarc_temp_error_status: true
         validate_certs: no
         return_content: yes
         status_code: 200
@@ -98,30 +113,30 @@
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-        body:
-          antivirus: "{{ antispam_profile_name }}"
         body_format: json
+        body:
+          antispam: "{{ antispam_profile_name }}"
         validate_certs: no
         return_content: yes
         status_code: 200
       when: operation == "associate"
 
-    - name: Remove antispam profile from PolicyRecipient rule
+    - name: Dissociate antispam profile from recipient policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/1"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
         method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
+        body_format: json
         body:
           antispam: ""
-        body_format: json
         validate_certs: no
         return_content: yes
         status_code: 200
       when: operation == "dissociate"
 
-    - name: delete prfil antispam 
+    - name: Delete antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
         method: DELETE
@@ -129,6 +144,6 @@
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         validate_certs: no
-        status_code: 200
         return_content: yes
+        status_code: 200
       when: operation == "delete"
