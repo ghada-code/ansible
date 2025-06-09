@@ -2,23 +2,12 @@
   hosts: fortimail1
   gather_facts: no
 
-  vars_prompt:
+  vars:
+    domain: "{{ domain }}"
+    policy_id: "{{ policy_id }}"
+    antispam_profile_name: "{{ antispam_profile_name }}"
+    operation: "{{ operation }}"
 
-    - name: domain
-      prompt: "Enter the domain name (e.g., site1.com)"
-      private: no
-
-    - name: policy_id
-      prompt: "Enter the recipient policy ID"
-      private: no
-
-    - name: antispam_profile_name
-      prompt: "Enter the antispam profile name"
-      private: no
-
-    - name: operation
-      prompt: "Choose operation: add, update, associate, dissociate, delete"
-      private: no
 
   tasks:
 
