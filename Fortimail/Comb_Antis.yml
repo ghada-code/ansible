@@ -46,8 +46,7 @@
           comments: "Profil créé automatiquement"
         validate_certs: no
         status_code: 200
-      when: operation[0] == "add"
-
+      when: "'add' in operation"
     - name: Update antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
@@ -96,7 +95,7 @@
         validate_certs: no
         return_content: yes
         status_code: 200
-      when: operation == "update"
+      when: "'update' in operation"
 
     - name: Associate antispam profile to recipient policy
       uri:
@@ -111,7 +110,7 @@
         validate_certs: no
         return_content: yes
         status_code: 200
-      when: operation == "associate"
+      when: "'associate' in operation"
 
     - name: Dissociate antispam profile from recipient policy
       uri:
@@ -126,7 +125,7 @@
         validate_certs: no
         return_content: yes
         status_code: 200
-      when: operation == "dissociate"
+      when: "'dissociate' in operation"
 
     - name: Delete antispam profile
       uri:
@@ -138,4 +137,4 @@
         validate_certs: no
         return_content: yes
         status_code: 200
-      when: operation == "delete"
+      when: "'delete' in operation"
