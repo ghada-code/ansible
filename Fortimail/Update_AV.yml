@@ -36,29 +36,29 @@
           fortindr_scan: true
           grayware_scan: true
           heuristic: true
-          heuristic_action: "quarantine"
+          heuristic_action: "SystemQuarantine"
           malware_outbreak_protection: true
           sandbox_analysis: true
           sandbox_analysis_uri: true
           sandbox_scan_mode: 0
           sandbox_url_scan_email_selection: 1
           scanner: true
-          action_file_signature: "discard"
-          action_fortindr_high: "discard"
-          action_fortindr_low: "quarantine"
-          action_fortindr_medium: "quarantine"
-          action_fortindr_virus: "discard"
-          action_outbreak: "quarantine"
-          action_sandbox_high: "discard"
-          action_sandbox_low: "quarantine"
-          action_sandbox_medium: "quarantine"
+          action_file_signature: "Discard"
+          action_fortindr_high: "Discard"
+          action_fortindr_low: "SystemQuarantine"
+          action_fortindr_medium: "SystemQuarantine"
+          action_fortindr_virus: "Discard"
+          action_outbreak: "SystemQuarantine"
+          action_sandbox_high: "Discard"
+          action_sandbox_low: "SystemQuarantine"
+          action_sandbox_medium: "SystemQuarantine"
           action_sandbox_noresult: "pass"
-          action_sandbox_uri_high: "discard"
-          action_sandbox_uri_low: "quarantine"
-          action_sandbox_uri_medium: "quarantine"
+          action_sandbox_uri_high: "Discard"
+          action_sandbox_uri_low: "SystemQuarantine"
+          action_sandbox_uri_medium: "SystemQuarantine"
           action_sandbox_uri_noresult: "pass"
-          action_sandbox_uri_virus: "discard"
-          action_sandbox_virus: "discard"
+          action_sandbox_uri_virus: "Discard"
+          action_sandbox_virus: "Discard"
         body_format: json
         validate_certs: no
         return_content: yes
