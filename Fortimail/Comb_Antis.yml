@@ -41,17 +41,53 @@
         status_code: 200
       when: operation == "add"
 
-    - name: Update Antispam Profile
+    - name: Update the antispam profile 
       uri:
-        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
         method: PUT
         headers:
-          Authorization: "Bearer {{ api_token }}"
-          Content-Type: "application/json"
-        body_format: json
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
         body:
-          spam_action: "discard"
-          spam_level: "4"
+          bannedword: true
+          spf_checking: true
+          spf_pass_status: true
+          spf_fail_status: true
+          spf_neutral_status: true
+          spf_none_status: true
+          spf_perm_error_status: true
+          spf_sender_alignment_status: true
+          spf_soft_fail_status: true
+          spf_temp_error_status: true
+          action_spf_pass: "pass"
+          action_spf_soft_fail: "UserQuarantine"
+          action_dkim: "pass"
+          action_dkim_none: "UserQuarantine"
+          action_dkim_pass: "pass"
+          action_dkim_temp_error: "UserQuarantine"
+          action_dmarc: "pass"
+          action_dmarc_none: "UserQuarantine"
+          action_dmarc_pass: "pass"
+          action_dmarc_temp_error: "UserQuarantine"
+          action_spf_fail: "UserQuarantine"
+          action_spf_neutral: "UserQuarantine"
+          action_spf_none: "UserQuarantine"
+          action_spf_perm_error: "UserQuarantine"
+          action_spf_sender_alignment: "pass"
+          action_spf_temp_error: "UserQuarantine"
+          dkim_fail_status: true
+          dkim_none_status: true
+          dkim_pass_status: true
+          dkim_status: true
+          dkim_temp_error_status: true
+          dmarc_fail_status: true
+          dmarc_none_status: true
+          dmarc_pass_status: true
+          dmarc_status : true
+          dmarc_temp_error_status : true
+        body_format: json
+        validate_certs: no
+        return_content: yes
         status_code: 200
       when: operation == "update"
 
