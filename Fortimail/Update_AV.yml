@@ -24,15 +24,48 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Récupérer un profil antispam exemple
+    - name: Update the antiV profile 
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ profile_name }}"
-        method: GET
+        method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body:
+          file_signature_check: true
+          fortindr_scan: true
+          grayware_scan: true
+          heuristic: true
+          heuristic_action: "quarantine"
+          malware_outbreak_protection: true
+          sandbox_analysis: true
+          sandbox_analysis_uri: true
+          sandbox_scan_mode: 0
+          sandbox_url_scan_email_selection: 1
+          scanner: true
+          action_file_signature: "discard"
+          action_fortindr_high: "discard"
+          action_fortindr_low: "quarantine"
+          action_fortindr_medium: "quarantine"
+          action_fortindr_virus: "discard"
+          action_outbreak: "quarantine"
+          action_sandbox_high: "discard"
+          action_sandbox_low: "quarantine"
+          action_sandbox_medium: "quarantine"
+          action_sandbox_noresult: "pass"
+          action_sandbox_uri_high: "discard"
+          action_sandbox_uri_low: "quarantine"
+          action_sandbox_uri_medium: "quarantine"
+          action_sandbox_uri_noresult: "pass"
+          action_sandbox_uri_virus: "discard"
+          action_sandbox_virus: "discard"
+        body_format: json
         validate_certs: no
         return_content: yes
-      register: prof_details
+        status_code: 200
+      register: update_response
+
     
-    - debug:
-        var: prof_details.json
+    - name: Show raw create_profile_response
+      debug:
+        var: update_response
