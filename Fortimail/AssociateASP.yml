@@ -24,17 +24,17 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-        
-    - name: Vérifier que la PolicyRecipient ID {{ policy_id }} existe
+    - name: Lister les règles d’accès (PolicyRecipient)
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ policy_id }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient/"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
         validate_certs: no
-        status_code: 200
         return_content: yes
-      register: policy_check
-    - name: Show policy exist
+      register: rule_list
+
+    - name: Afficher les règles
       debug:
-        var: policy_check
+        var: rule_list.json.collection
+        
