@@ -39,12 +39,13 @@
     - name: Calculate next available Policy ID
       set_fact:
         next_policy_id: >-
-          {% set mkeys = existing_policies_response.json.collection | map(attribute='mkey') | list %}
+          {% set mkeys = existing_policies_response.json.collection | map(attribute='mkey') | map('int') | list %}
           {{ (mkeys | max) + 1 if mkeys | length > 0 else 1 }}
+
 
     - name: Create IP Policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ next_policy_id.strip(" ") }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ next_policy_id }}"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
