@@ -34,7 +34,8 @@
         return_content: yes
       register: existing_policies_response
     - name: get
-      debug: existing_policies_response
+      debug: 
+        var: existing_policies_response
     - name: Calculate next available Policy ID
       set_fact:
         next_policy_id: >-
