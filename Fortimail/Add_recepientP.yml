@@ -55,7 +55,7 @@
           recipient_domain: "{{ domain }}"
           sender_domain: "*"
           status: true
-          profile-resource: "Res_Default@system"  # ✅ Required to avoid error -56
+          misc: "Res_Default@system"
         validate_certs: false
         return_content: yes
         status_code: 200
