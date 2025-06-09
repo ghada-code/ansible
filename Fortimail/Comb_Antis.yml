@@ -1,0 +1,76 @@
+- name: Manage Antispam Profile in Recipient Policy
+  hosts: fortimail1
+  gather_facts: no
+  vars:
+    domain: "site1.com"
+    recipient_policy_id: 1
+    antispam_profile_name: "Antispam1"
+
+    operation: "associate" 
+
+  tasks:
+
+    - name: Add Antispam Profile
+      uri:
+        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          mkey: "{{ antispam_profile_name }}"
+          mdomain: "{{ domain }}"
+          spam_action: "tag"
+          spam_level: "3"
+        status_code: 200
+      when: operation == "add"
+
+    - name: Update Antispam Profile
+      uri:
+        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          spam_action: "discard"
+          spam_level: "4"
+        status_code: 200
+      when: operation == "update"
+
+    - name: Associate Antispam Profile to Recipient Policy
+      uri:
+        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ recipient_policy_id }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          antispam: "{{ antispam_profile_name }}"
+        status_code: 200
+      when: operation == "associate"
+
+    - name: Dissociate Antispam Profile from Recipient Policy
+      uri:
+        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/PolicyRecipient/{{ recipient_policy_id }}"
+        method: PUT
+        headers:
+          Authorization: "Bearer {{ api_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          antispam: ""
+        status_code: 200
+      when: operation == "dissociate"
+
+    - name: Delete Antispam Profile
+      uri:
+        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam/{{ antispam_profile_name }}"
+        method: DELETE
+        headers:
+          Authorization: "Bearer {{ api_token }}"
+        status_code: 200
+      when: operation == "delete"
