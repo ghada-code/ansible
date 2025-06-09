@@ -46,7 +46,7 @@
           comments: "Profil créé automatiquement"
         validate_certs: no
         status_code: 200
-      when: operation == "add"
+      when: operation[0] == "add"
 
     - name: Update antispam profile
       uri:
