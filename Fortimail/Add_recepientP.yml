@@ -55,7 +55,7 @@
           recipient_domain: "{{ domain }}"
           sender_domain: "*"
           status: true
-          misc: "Res_Default@system"
+          profile-resource: "Res_Default@system"
         validate_certs: false
         return_content: yes
         status_code: 200
