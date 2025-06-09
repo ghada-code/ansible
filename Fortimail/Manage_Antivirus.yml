@@ -30,7 +30,7 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Create antispam profile
+    - name: Create antivirus profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ antiv_profile_name }}"
         method: POST
@@ -100,7 +100,7 @@
         status_code: 200
       when: "'associate' in operation"
 
-    - name: Dissociate antispam profile from recipient policy
+    - name: Dissociate antivirus profile from recipient policy
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
         method: PUT
@@ -115,7 +115,7 @@
         status_code: 200
       when: "'dissociate' in operation"
 
-    - name: Delete antispam profile
+    - name: Delete antivirus profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfAntivirus/{{ antiv_profile_name }}"
         method: DELETE
