@@ -1,6 +1,8 @@
 - name: Add Recipient Policy
   hosts: fortimail1
   gather_facts: no
+  vars: 
+    domain: "site1.com"
   tasks:
 
     - name: Login to FortiMail and get session cookie
