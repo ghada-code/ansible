@@ -10,6 +10,9 @@
 
 
   tasks:
+    - name: Debug survey variable operation
+      debug:
+        var: operation
 
     - name: Login to FortiMail and get session cookie
       uri:
