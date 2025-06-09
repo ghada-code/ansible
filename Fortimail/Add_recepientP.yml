@@ -46,7 +46,6 @@
           Content-Type: application/json
         body_format: json
         body:
-          id: "{{ policy_id | int }}"
           comment: "Policy created via Ansible"
           recipient_pattern: "*"
           sender_pattern: "*"
