@@ -5,7 +5,6 @@
     domain: "site1.com"
     recipient_policy_id: 1
     antispam_profile_name: "Antispam1"
-
     operation: "associate" 
 
   tasks:
@@ -27,20 +26,18 @@
     - name: Extract session cookie string
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
-
-    - name: Add Antispam Profile
+    - name: Crate rofil antispam 
       uri:
-        url: "{{ fortimail_host }}/api/v1/domain/{{ domain }}/ProfAntispam"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/ProfAntispam/{{ antispam_profile_name }}"
         method: POST
         headers:
-          Authorization: "Bearer {{ api_token }}"
-          Content-Type: "application/json"
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
         body_format: json
         body:
-          mkey: "{{ antispam_profile_name }}"
-          mdomain: "{{ domain }}"
-          spam_action: "tag"
-          spam_level: "3"
+          name: "{{ antispam_profile_name }}"
+          comments: "Profil créé automatiquement"
+        validate_certs: no
         status_code: 200
       when: operation == "add"
 
