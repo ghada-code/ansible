@@ -39,7 +39,7 @@
         var: recipient_policies.json        
     - name: Create Recipient Policy
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/2"
         method: POST
         headers:
           Cookie: "{{ fm_cookie_string }}"
