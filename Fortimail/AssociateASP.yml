@@ -26,7 +26,7 @@
         fm_cookie_string: "{{ login_response.cookies_string }}"
     - name: Lister les règles d’accès (PolicyRecipient)
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRecipient/"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
