@@ -51,9 +51,10 @@
         body:
           comment: "Policy created via Ansible"
           recipient_pattern: "*"
-          sender_pattern: "*@site1.com"
+          direction: 2
+          sender_pattern: "*"
           recipient_domain: "{{ domain }}"
-          sender_domain: "*@site1.com"
+          sender_domain: "*"
           status: true
           misc: "Res_Default"
         validate_certs: false
