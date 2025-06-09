@@ -1,0 +1,51 @@
+- name: Add Recipient Policy
+  hosts: fortimail1
+  gather_facts: no
+  vars: 
+    domain: "site1.com"
+    policy_enabled: true
+  tasks:
+
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"   
+    - name: Get existing recipient policies
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: policies
+    
+    - name: Show policies JSON
+      debug:
+        var: policies.json
+
+
+    - name: Create Recipient Policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/3"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: false
+        status_code: 200
