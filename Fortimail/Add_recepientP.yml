@@ -3,6 +3,7 @@
   gather_facts: no
   vars: 
     domain: "site1.com"
+    policy_enabled: true
   tasks:
 
     - name: Login to FortiMail and get session cookie
@@ -33,7 +34,7 @@
         body_format: json
         body:
           name: "plocy"
-          status: "{{ policy_enabled | ternary('enable', 'disable') }}"
+          status: "{{ (policy_enabled | default(true)) | ternary('enable', 'disable') }}"
           # Add additional policy details here, e.g.:
           # description: "Created via Ansible"
           # spam_check: true
