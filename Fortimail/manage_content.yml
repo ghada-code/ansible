@@ -3,8 +3,7 @@
   gather_facts: no
   vars:
     domain: "System"
-    content_profile_name: "IBE_SECUREaa"
-    attachment_rule_name: "IBE_SECUREaa_rule"
+    content_profile_name: "IBE_SECURE"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -63,32 +62,7 @@
         status_code: 200
       register: ibe_profile_response
 
-    - name: Create secure attachment scan rule linked to IBE profile
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment"
-        method: POST
-        headers:
-          Cookie: "{{ cookie }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          comment: "Attachment scan rule for IBE"
-          action: "reject"
-          filetype_allow: 8
-          max_size: 10240
-          scan_options: 3
-          max_num_of_attachment: 10
-          max_num_of_attachment_enable: true
-          status: 1
-          # Link to content profile by its mkey:
-          content_profile: "{{ content_profile_name }}"
-        validate_certs: no
-        return_content: yes
-        status_code: 200
-      register: attachment_response
 
     - name: Show created profile summary
       debug:
-        msg:
-          - "IBE Content Profile creation status: {{ ibe_profile_response.status }}"
-          - "Attachment Rule creation status: {{ attachment_response.status }}"
+        msg: "IBE Content Profile creation status: {{ ibe_profile_response.status }}"
