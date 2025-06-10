@@ -80,4 +80,4 @@
       debug:
         msg:
           - "IBE Content Profile created: {{ ibe_profile_response.status }}"
-          - "Attachment Rule created: {{ attachment_response.status }}"
+          - "Attachment Rule created: {{ attachment_response.json }}"
