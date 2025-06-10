@@ -34,61 +34,14 @@
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-        body_format: json
-        body:
-          comment: "{{ comment }}"
-          remove_active_content: true
-          html_content_action: 1             # log
-          html_content_uri_action: 3         # block
-          html_content_uri_selection: 1      # all
-          text_content_action: 1             # log
-          max_num_of_attachment: 10
-          max_num_of_attachment_enable: true
-          max_size: 10240                    # 10 MB
-          max_size_status: true
-          archive_max_recursive_level: 5
-          recursive_archive_block: true
-          block_archive_protected: true
-          block_failure_uncompress: true
-          decrypt_password_office: true
-          decrypt_password_archive: true
-          decrypt_password_options: 1        # brute-force
-          decrypt_password_num_to_try: 5
-          bypass_on_auth: false
-          scan_options: 0
-          archive_content_check: true
-          embedded_scan_options: 0
-          filetype_allow: 0
-          mdomain: "{{ domain }}"
         validate_certs: false
         return_content: yes
         status_code: 200
       register: content_profile_response
 
-    - name: Create Attachment Scan Rules
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/{{ profile_name }}"
-        method: POST
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          domain: "{{ domain }}"
-          rule:
-            - file_type: "exe"
-              action: "block"
-            - file_type: "zip"
-              action: "scan"
-            - file_type: "pdf"
-              action: "scan"
-            - file_type: "doc"
-              action: "scan"
-        validate_certs: false
-        return_content: yes
-        status_code: 200
-      register: attachment_rules_response
-
+    - name: Extract session cookie string
+      debug:
+        var: "{{ content_profile_response }}"
     - name: Show creation results
       debug:
         msg:
