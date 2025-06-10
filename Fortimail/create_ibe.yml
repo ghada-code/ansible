@@ -3,7 +3,7 @@
   hosts: fortimail1
   gather_facts: no
   vars:
-    domain: "System"
+    domain: "system"
     profile_name: "IBE-TESTz"
 
   tasks:
