@@ -1,5 +1,5 @@
 
-- hosts: fortimail1
+- hosts: fortimail2
   gather_facts: no
   vars:
     new_user: "ghada"
