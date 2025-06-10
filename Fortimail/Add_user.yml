@@ -26,7 +26,7 @@
         cookie: "{{ login_response.cookies_string }}"
     - name: List existing mailbox users in FortiMail domain
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/"
         method: GET
         headers:
           Cookie: "{{ cookie }}"
@@ -40,26 +40,3 @@
       debug:
         var: user_list_response.json.collection
 
-    - name: Create mailbox user in FortiMail
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser"
-        method: POST
-        headers:
-          Cookie: "{{ cookie }}"
-          Content-Type: application/json
-        body_format: json
-        body:
-          mkey: "{{ username }}"
-          passwd: "{{ user_password }}"
-          type: 0               # 0 = local mailbox user
-          status: 1             # 1 = enabled
-          profile: "default"    # or specify your custom user profile
-          comment: "Created via Ansible"
-        validate_certs: no
-        return_content: yes
-        status_code: 200
-      register: user_create_result
-
-    - name: Show result
-      debug:
-        msg: "Mailbox user created: {{ user_create_result.status }}"
