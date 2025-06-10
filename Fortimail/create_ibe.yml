@@ -30,7 +30,7 @@
     - name: Create IBE Content Profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ profile_name }}"
-        method: POST
+        method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
@@ -39,11 +39,7 @@
         status_code: 200
       register: content_profile_response
 
-    - name: Extract session cookie string
-      debug:
-        var: "{{ content_profile_response }}"
     - name: Show creation results
       debug:
         msg:
-          - "Content profile response: {{ content_profile_response.status }}"
-          - "Attachment rules response: {{ attachment_rules_response.status }}"
+          - "Content profile response: {{ content_profile_response }}"
