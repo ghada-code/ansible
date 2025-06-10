@@ -38,21 +38,18 @@
         return_content: yes
         status_code: 200
       register: ibe_profile_response
-
-    - name: List existing attachment scan rules
+    
+    - name: List all attachment scan rules
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/audio"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
         validate_certs: no
         return_content: yes
         status_code: 200
-      register: existing_attachments
-
-
-    - name: Show created profile summary
-      debug:
-        msg:
-          - "IBE Content Profile created: {{ ibe_profile_response.json }}"
-          - "Attachment Rule created: {{ existing_attachments.json }}"
+      register: all_attachment_rules
+    
+    - debug:
+        var: all_attachment_rules.json
+    
