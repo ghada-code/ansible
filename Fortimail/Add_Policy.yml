@@ -56,9 +56,9 @@
           client: "172.29.1.0/24"
           server: "172.29.2.0/24"
           status: true
-          antispam_profile: "spf@system"
-          antivirus_profile: "AV01@system"
-          content_profile: "IBE-TEST@system"
+          antispam_profile: "spf@SSystem"
+          antivirus_profile: "AV01@System"
+          content_profile: "IBE-TEST@System"
           session_profile: "Inbound_Session@system"
           auth_type: 0
           client_type: 0
