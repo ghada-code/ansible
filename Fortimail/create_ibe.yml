@@ -4,7 +4,7 @@
   gather_facts: no
   vars:
     domain: "System"
-    profile_name: "IBE_SECURE"
+    profile_name: "IBE-TEST"
     comment: "Secure IBE profile created via Ansible"
 
   tasks:
