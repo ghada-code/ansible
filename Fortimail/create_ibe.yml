@@ -89,6 +89,5 @@
 
     - name: Show created profile summary
       debug:
-        msg:
-          - "IBE Content Profile created: {{ ibe_profile_response.status }}"
+        msg: "IBE Content Profile created: {{ ibe_profile_response.status }}"
 *
