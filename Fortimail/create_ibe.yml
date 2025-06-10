@@ -32,7 +32,7 @@
 
     - name: Get all content profiles (including IBE)
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfileContent"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
