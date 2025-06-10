@@ -1,0 +1,80 @@
+- name: Manage LDAP Profile in FortiMail
+  hosts: fortimail1
+  gather_facts: no
+
+  vars:
+    ldap_profile_name: "{{ ldap_profile_name }}"
+    operation: "{{ operation }}"
+    domain: "{{ domain }}"  
+
+  tasks:
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"
+
+    - name: Create LDAP profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/ProfLdap/{{ ldap_profile_name }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          name: "{{ ldap_profile_name }}"
+          comments: "LDAP profile created via Ansible"
+          server: "192.168.1.10"  # Your LDAP server IP
+          port: 389
+          secure: "none"         # or "starttls", "ldaps"
+          basedn: "dc=site1,dc=com"
+          userdn: "cn=ldapbind,cn=Users,dc=site1,dc=com"
+          password: "pass"
+          querytype: "proxy"
+          queryclass: "user"
+          attribute: "sAMAccountName"
+          secure_check_cert: false
+        validate_certs: no
+        status_code: 200
+      when: "'add' in operation"
+
+    - name: Update LDAP profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/ProfLdap/{{ ldap_profile_name }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          port: 389
+          secure: "none"
+          password: "UpdatedPasswordIfNeeded"
+        validate_certs: no
+        status_code: 200
+      when: "'update' in operation"
+
+    - name: Delete LDAP profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/ProfLDAP/{{ ldap_profile_name }}"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
+        status_code: 200
+      when: "'delete' in operation"
