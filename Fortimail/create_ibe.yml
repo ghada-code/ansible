@@ -1,0 +1,55 @@
+---
+- name: Create IBE content profile on FortiMail
+  hosts: fortimail1
+  gather_facts: no
+  vars:
+    domain: "System"
+    profile_name: "IBE-TESTz"
+
+  tasks:
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"
+
+    - name: Create IBE content profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfileContent/{{ profile_name }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          comment: "IBE profile created via Ansible"
+          delivery_encrypt: 3             # 3 = IBE (per FortiMail API)
+          ibe_encryption: true
+          ibe_expire: 7                   # Expiration in days
+          ibe_notify: true
+          ibe_notify_user: true
+          ibe_notify_content: 0          # 0 = default
+          ibe_notify_lang: 1             # 1 = English
+          ibe_notify_template: ""
+          status: true
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: create_ibe_response
+
+    - name: Show response
+      debug:
+        var: create_ibe_response.json
