@@ -2,8 +2,8 @@
 - hosts: fortimail1
   gather_facts: no
   vars:
-    domain: "site1.com"
-    profile_name: "ghada"
+    domain: "System"
+    profile_name: "spf"
     policy_id: 2     
   tasks:
     - name: Login to FortiMail and get session cookie
