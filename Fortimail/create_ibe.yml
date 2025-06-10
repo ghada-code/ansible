@@ -69,7 +69,7 @@
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/1"
         method: POST
         headers:
-          Cookie: "{{ cookie }}"
+          Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body_format: json
         body:
