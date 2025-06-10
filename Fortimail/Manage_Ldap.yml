@@ -85,7 +85,7 @@
 
     - name: Delete LDAP profile
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/ProfLDAP/{{ ldap_profile_name }}"
+        url: "https://{{ fortimail_ip }}/api/v1/ProfLdap/{{ ldap_profile_name }}"
         method: DELETE
         headers:
           Cookie: "{{ fm_cookie_string }}"
