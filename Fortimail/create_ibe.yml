@@ -66,11 +66,21 @@
 
     - name: Create secure attachment scan rule
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment"
-        method: GET
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/1"
+        method: POST
         headers:
-          Cookie: "{{ fm_cookie_string }}"
+          Cookie: "{{ cookie }}"
           Content-Type: application/json
+        body_format: json
+        body:
+          mkey: "{{ attachment_rule_name }}"
+          comment: "Attachment scan rule for IBE"
+          action: "reject"
+          filetype_allow: 0
+          max_size: 10240
+          scan_options: 3
+          max_num_of_attachment: 10
+          max_num_of_attachment_enable: true
         validate_certs: no
         return_content: yes
         status_code: 200
