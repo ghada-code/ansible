@@ -5,9 +5,7 @@
     domain: "System"
     content_profile_name: "IBE_SECUREaa"
     attachment_rule_name: "IBE_SECUREaa"
-    cookie: ""
   tasks:
-
     - name: Login to FortiMail and get session cookie
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
@@ -90,4 +88,3 @@
     - name: Show created profile summary
       debug:
         msg: "IBE Content Profile created: {{ ibe_profile_response.status }}"
-*
