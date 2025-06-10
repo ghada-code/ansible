@@ -42,4 +42,4 @@
     - name: Show creation results
       debug:
         msg:
-          - "Content profile response: {{ content_profile_response }}"
+          - "Content profile response: {{ content_profile_response.json }}"
