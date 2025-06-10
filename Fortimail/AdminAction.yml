@@ -1,0 +1,46 @@
+- name: FortiMail Administrative Actions (Restart, Shutdown, Reload)
+  hosts: fortimail1
+  gather_facts: no
+
+  vars:
+
+    admin_action: 2    # 1 = Restart, 2 = Shutdown, 3 = Reload
+
+  tasks:
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Set session cookie
+      set_fact:
+        cookie: "{{ login_response.cookies_string }}"
+
+    - name: Perform administrative action on FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/SysStatusCommand/"
+        method: POST
+        headers:
+          Cookie: "{{ cookie }}"
+          Content-Type: application/json
+        body:
+          action: "{{ admin_action | int }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: admin_action_response
+
+    - name: Show result
+      debug:
+        var: admin_action_response.json
