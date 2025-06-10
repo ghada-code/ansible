@@ -26,7 +26,7 @@
         cookie: "{{ login_response.cookies_string }}"
     - name: List existing mailbox users in FortiMail domain
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/ghada"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/*"
         method: GET
         headers:
           Cookie: "{{ cookie }}"
