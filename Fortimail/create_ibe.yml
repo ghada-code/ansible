@@ -55,4 +55,4 @@
       debug:
         msg:
           - "IBE Content Profile created: {{ ibe_profile_response.json }}"
-          - "Attachment Rule created: {{ attachment_response.json }}"
+          - "Attachment Rule created: {{ existing_attachments.json }}"
