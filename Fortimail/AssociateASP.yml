@@ -25,20 +25,6 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-        
-    - name: Vérifier que la PolicyRecipient ID {{ policy_id }} existe
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: no
-        status_code: 200
-        return_content: yes
-      register: policy_check
-    - name: Show policy exist
-      debug:
-        var: policy_check
     - name: Modify PolicyRcpt to apply antispam profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ policy_id }}"
