@@ -72,7 +72,6 @@
           Content-Type: application/json
         body_format: json
         body:
-          mkey: "{{ attachment_rule_name }}"
           comment: "Attachment scan rule for IBE"
           action: "reject"
           filetype_allow: 8
