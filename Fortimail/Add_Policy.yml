@@ -2,7 +2,7 @@
   hosts: fortimail1
   gather_facts: no
   vars: 
-    domain: "site1.com"
+    domain: "System"
     policy_enabled: true
   tasks:
 
