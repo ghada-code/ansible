@@ -41,7 +41,7 @@
 
     - name: List existing attachment scan rules
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/audio"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
