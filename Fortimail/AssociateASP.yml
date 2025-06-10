@@ -33,7 +33,7 @@
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body:
-          antispam: "{{ profile_name }}"
+          antispam_profile: "{{ profile_name }}"
         body_format: json
         validate_certs: no
         return_content: yes
