@@ -3,7 +3,7 @@
   gather_facts: no
   vars:
     domain: "site1.com"       # Mail domain (must exist in FortiMail)
-    username: "john@site1.com"
+    username: "john"
     user_password: "StrongP@ssw0rd!"
   tasks:
     - name: Login to FortiMail and get session cookie
