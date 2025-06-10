@@ -27,7 +27,7 @@
 
     - name: Add a mailbox user to FortiMail (Server Mode)
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/UserMail"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/UserMail/{{ username }}"
         method: POST
         headers:
           Cookie: "{{ cookie }}"
