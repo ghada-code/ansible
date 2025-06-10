@@ -1,10 +1,11 @@
 ---
-- name: Create IBE content profile on FortiMail
+- name: Create Secure IBE Content Profile with Attachment Scan Rules
   hosts: fortimail1
   gather_facts: no
   vars:
-    domain: "system"
-    profile_name: "IBE-TESTz"
+    domain: "System"
+    profile_name: "IBE_SECURE"
+    comment: "Secure IBE profile created via Ansible"
 
   tasks:
     - name: Login to FortiMail and get session cookie
@@ -17,7 +18,7 @@
           name: "{{ fortimail_username }}"
           password: "{{ fortimail_password }}"
         body_format: json
-        validate_certs: no
+        validate_certs: false
         return_content: yes
         status_code: 200
       register: login_response
@@ -26,25 +27,7 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Extract session cookie string
-      set_fact:
-        fm_cookie_string: "{{ login_response.cookies_string }}"
-
-    - name: Get all content profiles (including IBE)
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: false
-        return_content: yes
-        status_code: 200
-      register: content_profiles_response
-
-    - name: Filter and show only IBE content profiles
-      debug:
-        var: content_profiles_response.json
-    - name: Create IBE content profile
+    - name: Create IBE Content Profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ profile_name }}"
         method: POST
@@ -53,40 +36,62 @@
           Content-Type: application/json
         body_format: json
         body:
-          comment: " IBE profile created via Ansible"
+          comment: "{{ comment }}"
           remove_active_content: true
-          archive_content_check: true
-          archive_scan_options: 1
+          html_content_action: 1             # log
+          html_content_uri_action: 3         # block
+          html_content_uri_selection: 1      # all
+          text_content_action: 1             # log
+          max_num_of_attachment: 10
+          max_num_of_attachment_enable: true
+          max_size: 10240                    # 10 MB
+          max_size_status: true
           archive_max_recursive_level: 5
+          recursive_archive_block: true
           block_archive_protected: true
           block_failure_uncompress: true
-          embedded_scan_options: 1
-          max_num_of_attachment: 5
-          max_num_of_attachment_enable: true
-          max_size: 5120
-          max_size_status: true
-          max_size_option: 1
-          decrypt_password_archive: true
           decrypt_password_office: true
-          decrypt_password_options: 1
+          decrypt_password_archive: true
+          decrypt_password_options: 1        # brute-force
           decrypt_password_num_to_try: 5
-          html_content_action: 2              
-          html_content_uri_action: 2       
-          html_content_uri_selection: 2         
-          text_content_action: 2              
-          scan_options: 1
-          filetype_allow: 0                  
-          pattern_allow: 0
-          image_analysis_scan: true
-          action_encrypted: "Encrypt_Pull"
-          action_image: "Encrypt_Pull"
-          action_policy_match: "Encrypt_Pull"
-          action: "Encrypt_Pull"
+          bypass_on_auth: false
+          scan_options: 0
+          archive_content_check: true
+          embedded_scan_options: 0
+          filetype_allow: 0
+          mdomain: "{{ domain }}"
         validate_certs: false
         return_content: yes
         status_code: 200
-      register: create_ibe_response
+      register: content_profile_response
 
-    - name: Show response
+    - name: Create Attachment Scan Rules
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContentAttachment/{{ profile_name }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          mdomain: "{{ domain }}"
+          mkey: "{{ profile_name }}"
+          rule:
+            - file_type: "exe"
+              action: "block"
+            - file_type: "zip"
+              action: "scan"
+            - file_type: "pdf"
+              action: "scan"
+            - file_type: "doc"
+              action: "scan"
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: attachment_rules_response
+
+    - name: Show creation results
       debug:
-        var: create_ibe_response.json
+        msg:
+          - "Content profile response: {{ content_profile_response.status }}"
+          - "Attachment rules response: {{ attachment_rules_response.status }}"
