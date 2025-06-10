@@ -24,10 +24,25 @@
     - name: Extract session cookie
       set_fact:
         cookie: "{{ login_response.cookies_string }}"
+    - name: List existing mailbox users in FortiMail domain
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser"
+        method: GET
+        headers:
+          Cookie: "{{ cookie }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: user_list_response
+    
+    - name: Show list of users
+      debug:
+        var: user_list_response.json.collection
 
     - name: Create mailbox user in FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/{{ username }}"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser"
         method: POST
         headers:
           Cookie: "{{ cookie }}"
