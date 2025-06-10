@@ -81,6 +81,7 @@
           action_encrypted: "Encrypt_Pull"
           action_image: "Encrypt_Pull"
           action_policy_match: "Encrypt_Pull"
+          action: "Encrypt_Pull"
         validate_certs: false
         return_content: yes
         status_code: 200
