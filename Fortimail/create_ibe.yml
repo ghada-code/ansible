@@ -26,6 +26,24 @@
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
 
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"
+
+    - name: Get all content profiles (including IBE)
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfileContent"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: content_profiles_response
+
+    - name: Filter and show only IBE content profiles
+      debug:
+        var: content_profiles_response
     - name: Create IBE content profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ profile_name }}"
