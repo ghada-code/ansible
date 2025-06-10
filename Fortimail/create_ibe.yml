@@ -74,8 +74,7 @@
           Content-Type: application/json
         body_format: json
         body:
-          mdomain: "{{ domain }}"
-          mkey: "{{ profile_name }}"
+          domain: "{{ domain }}"
           rule:
             - file_type: "exe"
               action: "block"
