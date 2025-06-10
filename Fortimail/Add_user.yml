@@ -1,12 +1,10 @@
-
-- hosts: fortimail2
+- name: Add mailbox user in FortiMail (Server Mode)
+  hosts: fortimail2
   gather_facts: no
   vars:
-    new_user: "ghada"
-    user_password: "GhadaSecure2025"
-    user_domain: "site1.com"
-    user_email: "ghada@site1.com"
-
+    domain: "site1.com"       # Mail domain (must exist in FortiMail)
+    username: "john@site1.com"
+    user_password: "StrongP@ssw0rd!"
   tasks:
     - name: Login to FortiMail and get session cookie
       uri:
@@ -22,31 +20,31 @@
         return_content: yes
         status_code: 200
       register: login_response
-    - name: Extract session cookie string
-      set_fact:
-        fm_cookie_string: "{{ login_response.cookies_string }}"
-    - name: Get list of domains
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: no
-      register: domain_list
-    
-    - name: Show available domains
-      debug:
-        var: domain_list.json
-    - name: List recipient policies with PolicyRcpt
-      uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/site1.com/PolicyRcpt/"
-        method: GET
-        headers:
-          Cookie: "{{ fm_cookie_string }}"
-        validate_certs: no
-      register: policy_list
-    
-    - name: Show recipient policy list
-      debug:
-        var: policy_list.json
 
+    - name: Extract session cookie
+      set_fact:
+        cookie: "{{ login_response.cookies_string }}"
+
+    - name: Create mailbox user in FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/{{ username }}"
+        method: POST
+        headers:
+          Cookie: "{{ cookie }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          mkey: "{{ username }}"
+          passwd: "{{ user_password }}"
+          type: 0               # 0 = local mailbox user
+          status: 1             # 1 = enabled
+          profile: "default"    # or specify your custom user profile
+          comment: "Created via Ansible"
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: user_create_result
+
+    - name: Show result
+      debug:
+        msg: "Mailbox user created: {{ user_create_result.status }}"
