@@ -1,10 +1,18 @@
-- name: Create secure IBE content profile and attachment rule on FortiMail
+- name: Manage Content Profile in Recipient Policy
   hosts: fortimail1
   gather_facts: no
+
   vars:
-    domain: "System"
-    content_profile_name: "IBE_SECURE"
+    domain: "{{ domain }}"
+    policy_id: "{{ policy_id }}"
+    content_profile_name: "{{ content_profile_name }}"
+    operation: "{{ operation }}"
+
   tasks:
+    - name: Debug selected operation
+      debug:
+        var: operation
+
     - name: Login to FortiMail and get session cookie
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
@@ -22,47 +30,83 @@
 
     - name: Extract session cookie
       set_fact:
-        cookie: "{{ login_response.cookies_string }}"
+        fm_cookie_string: "{{ login_response.cookies_string }}"
 
-    - name: Create secure IBE content profile
+    - name: Create content profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ content_profile_name }}"
         method: POST
         headers:
-          Cookie: "{{ cookie }}"
+          Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
         body_format: json
         body:
-          mkey: "{{ content_profile_name }}"
-          comment: "IBE profile created via Ansible"
-          remove_active_content: true
-          html_content_action: 1
-          html_content_uri_action: 3
-          html_content_uri_selection: 1
-          text_content_action: 1
-          max_size: 10240
-          max_size_status: true
-          max_num_of_attachment: 10
-          max_num_of_attachment_enable: true
-          recursive_archive_block: true
-          block_failure_uncompress: true
-          block_archive_protected: true
-          archive_max_recursive_level: 5
-          scan_options: 1
-          archive_scan_options: 1
-          embedded_scan_options: 1
-          bypass_on_auth: false
-          decrypt_password_options: 1
-          decrypt_password_num_to_try: 5
-          decrypt_password_office: true
-          decrypt_password_archive: true
-          action: "Encrypt_Pull"
+          name: "{{ content_profile_name }}"
+          comments: "Profil contenu créé automatiquement"
+        validate_certs: no
+        status_code: 200
+      when: "'add' in operation"
+
+    - name: Update content profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ content_profile_name }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          archive_password: "UserQuarantine"
+          office_macro: "UserQuarantine"
+          executable: "UserQuarantine"
+          multimedia: "pass"
+          script_file: "UserQuarantine"
+          encrypted_archive: "UserQuarantine"
+          unscannable_file: "UserQuarantine"
+          file_filter_status: true
         validate_certs: no
         return_content: yes
         status_code: 200
-      register: ibe_profile_response
+      when: "'update' in operation"
 
+    - name: Associate content profile to recipient policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          content: "{{ content_profile_name }}"
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'associate' in operation"
 
-    - name: Show created profile summary
-      debug:
-        msg: "IBE Content Profile creation status: {{ ibe_profile_response.status }}"
+    - name: Dissociate content profile from recipient policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ policy_id }}"
+        method: PUT
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          content: ""
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'dissociate' in operation"
+
+    - name: Delete content profile
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/ProfContent/{{ content_profile_name }}"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      when: "'delete' in operation"
