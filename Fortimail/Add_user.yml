@@ -41,9 +41,9 @@
     - name: Show available domains
       debug:
         var: domain_list.json.collection  
-    - name: List existing mailbox users in FortiMail domain
+    - name: List mailbox users in domain2.local
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser"
+        url: "https://{{ fortimail_ip }}/api/v1/domain/domain2.local/MailUser"
         method: GET
         headers:
           Cookie: "{{ cookie }}"
