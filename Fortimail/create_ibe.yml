@@ -53,16 +53,34 @@
           Content-Type: application/json
         body_format: json
         body:
-          comment: "IBE profile created via Ansible"
-          delivery_encrypt: 3             # 3 = IBE (per FortiMail API)
-          ibe_encryption: true
-          ibe_expire: 7                   # Expiration in days
-          ibe_notify: true
-          ibe_notify_user: true
-          ibe_notify_content: 0          # 0 = default
-          ibe_notify_lang: 1             # 1 = English
-          ibe_notify_template: ""
-          status: true
+          comment: " IBE profile created via Ansible"
+          remove_active_content: true
+          archive_content_check: true
+          archive_scan_options: 1
+          archive_max_recursive_level: 5
+          block_archive_protected: true
+          block_failure_uncompress: true
+          embedded_scan_options: 1
+          max_num_of_attachment: 5
+          max_num_of_attachment_enable: true
+          max_size: 5120
+          max_size_status: true
+          max_size_option: 1
+          decrypt_password_archive: true
+          decrypt_password_office: true
+          decrypt_password_options: 1
+          decrypt_password_num_to_try: 5
+          html_content_action: 2              
+          html_content_uri_action: 2       
+          html_content_uri_selection: 2         
+          text_content_action: 2              
+          scan_options: 1
+          filetype_allow: 0                  
+          pattern_allow: 0
+          image_analysis_scan: true
+          action_encrypted: "Encrypt_Pull"
+          action_image: "Encrypt_Pull"
+          action_policy_match: "Encrypt_Pull"
         validate_certs: false
         return_content: yes
         status_code: 200
