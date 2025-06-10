@@ -24,6 +24,23 @@
     - name: Extract session cookie
       set_fact:
         cookie: "{{ login_response.cookies_string }}"
+
+
+    - name: List all available domains
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain"
+        method: GET
+        headers:
+          Cookie: "{{ cookie }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: domain_list
+    
+    - name: Show available domains
+      debug:
+        var: domain_list.json.collection  
     - name: List existing mailbox users in FortiMail domain
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/MailUser/*"
