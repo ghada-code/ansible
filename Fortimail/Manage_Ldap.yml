@@ -26,7 +26,22 @@
     - name: Extract session cookie
       set_fact:
         fm_cookie_string: "{{ login_response.cookies_string }}"
+    - name: Get list of LDAP profiles
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/ProfLDAP/"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: ldap_profiles
 
+    - name: Display LDAP profiles
+      debug:
+        var: ldap_profiles.json.collection
+        
     - name: Create LDAP profile
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/ProfLdap/{{ ldap_profile_name }}"
