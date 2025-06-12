@@ -1,0 +1,76 @@
+- name: Manage Recipient Policy
+  hosts: fortimail1
+  gather_facts: no
+  vars: 
+    domain: "{{ domain }}"
+    policy_id: "{{ policy_id }}"
+    operation: "{{ operation }}"
+  tasks:
+
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"   
+    - name: Get existing recipient policies
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt"
+        method: GET
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: policies
+    
+    - name: Calculate next available Policy ID
+      set_fact:
+        next_policy_id: >-
+          {% set mkeys = policies.json.collection | map(attribute='mkey') | map('int') | list %}
+          {{ ((mkeys | max) + 1 if mkeys | length > 0 else 1) | trim }}
+
+    - name: Create Recipient Policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/{{ next_policy_id | int }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          comment: "Policy created via Ansible"
+          recipient_pattern: "*"
+          direction: 1
+          sender_pattern: "*"
+          recipient_domain: "{{ domain }}"
+          sender_domain: "*"
+          status: true
+          misc: "Res_Default"
+        validate_certs: false
+        return_content: yes
+        status_code: 200
+      register: create_policy_response
+      when: "'add' in operation"
+    - name: Delete Recipient Policy
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyRcpt/policy_id"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        validate_certs: false
+        status_code: 200
+      when: "'delete' in operation"
