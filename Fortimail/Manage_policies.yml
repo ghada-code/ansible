@@ -69,7 +69,7 @@
         status_code: 200
       register: create_ip_policy_response
       when: "'add' in operation"
-    - name: Delete IP Policy by client/server pair
+    - name: Delete IP Policy
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/domain/{{ domain }}/PolicyIp/{{ item.mkey }}"
         method: DELETE
