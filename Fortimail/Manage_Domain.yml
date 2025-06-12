@@ -1,0 +1,73 @@
+- hosts: fortimail1
+  gather_facts: no
+  vars: 
+    domain: "{{ domain }}"
+    operation: "{{ operation }}"
+  tasks:
+    - name: Login to FortiMail and get session cookie
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/AdminLogin"
+        method: POST
+        headers:
+          Content-Type: application/json
+        body:
+          name: "{{ fortimail_username }}"
+          password: "{{ fortimail_password }}"
+        body_format: json
+        validate_certs: no
+        return_content: yes
+        status_code: 200
+      register: login_response
+
+    - name: Extract session cookie string
+      set_fact:
+        fm_cookie_string: "{{ login_response.cookies_string }}"
+
+    - name: Add domain to FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/{{ domain }}"
+        method: POST
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          mkey: "example.com"
+          ip: "172.29.1.10"
+          port: 25
+          is_subdomain: false
+          maindomain: "example.com"
+          mxflag: 0
+          is_association: false
+          is_service_domain: false
+          recipient_verification: "SMTP"
+          ec_status: true
+          failed_time: 1
+        validate_certs: no
+        status_code: [200, 201]
+      when: "'add' in operation"
+
+    - name: Delete domain from FortiMail
+      uri:
+        url: "https://{{ fortimail_ip }}/api/v1/Domain/{{ domain }}"
+        method: DELETE
+        headers:
+          Cookie: "{{ fm_cookie_string }}"
+          Content-Type: application/json
+        body_format: json
+        body:
+          mkey: "example.com"
+          ip: "172.29.1.10"
+          port: 25
+          is_subdomain: false
+          maindomain: "example.com"
+          mxflag: 0
+          is_association: false
+          is_service_domain: false
+          recipient_verification: "SMTP"
+          ec_status: true
+          failed_time: 1
+        validate_certs: no
+        status_code: [200, 201]
+      when: "'delete' in operation"
+        
