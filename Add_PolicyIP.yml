@@ -14,7 +14,7 @@
   tasks:
     - name: Create AD user
       microsoft.ad.user:
-        identity: "{{ new_username }}"
+        name: "{{ new_username }}"
         firstname: "{{ new_username }}"
         password: "{{ new_password }}"
         upn: "{{ upn }}"
