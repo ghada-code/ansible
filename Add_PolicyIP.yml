@@ -11,7 +11,7 @@
       - "Domain Users"
 
   tasks:
-    - name: "Create AD user {{ new_username }}"
+    - name: Create AD user
       community.windows.win_domain_user:
         name: "{{ new_username }}"
         password: "{{ new_password }}"
