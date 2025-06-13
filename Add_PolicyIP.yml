@@ -1,18 +1,22 @@
-- name: Add user to Active Directory
+---
+- name: Create an Active Directory user
   hosts: all
   gather_facts: no
+  collections:
+    - ansible.windows
+
   vars:
-    new_username: "john.doe"
-    new_password: "P@ssw0rd123!"  # Must meet domain password policy
-    upn: "john.doe@site1.com"
+    new_username: user2
+    new_password: "YourSecurePassword123!"
+    upn: "user2@site1.com"
+    display_name: "User Two"
     ad_ou: "OU=Users,DC=company,DC=com"
-    display_name: "John Doe"
     groups:
       - "Domain Users"
 
   tasks:
-    - name: Create AD user
-      community.windows.win_domain_user:
+    - name: Create AD user "{{ new_username }}"
+      win_domain_user:
         name: "{{ new_username }}"
         password: "{{ new_password }}"
         user_principal_name: "{{ upn }}"
