@@ -21,6 +21,5 @@
         enabled: yes
         groups: 
           set:
-            - name: "Domain Users"
-            - name: "CN=Administrators,CN=Builtin,DC=company,DC=com"
+            - Domain Users
         state: present
