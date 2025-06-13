@@ -1,13 +1,13 @@
-- name: Manage Windows AD users
+- name: Create or update domain user 'user2'
   hosts: all
   gather_facts: no
   tasks:
-    - name: Create or update user 'user2'
-      win_user:
+    - name: Ensure domain user 'user2' exists
+      ansible.windows.win_domain_user:
         name: user2
         password: "P@ssw0rd123!"
         user_principal_name: user2@site2.com
+        enabled: yes
         groups:
           - "Domain Users"
         state: present
-        description: "Managed by Ansible"
