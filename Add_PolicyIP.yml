@@ -8,8 +8,6 @@
     upn: "user2@site1.com"
     display_name: "User Two"
     ad_ou: "OU=Users,DC=company,DC=com"
-    groups:
-      - "Domain Users"
 
   tasks:
     - name: Create AD user
@@ -21,5 +19,5 @@
         display_name: "{{ display_name }}"
         path: "{{ ad_ou }}"
         enabled: yes
-        groups: "{{ groups }}"
+        groups: "Domain Users"
         state: present
