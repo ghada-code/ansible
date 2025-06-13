@@ -1,0 +1,20 @@
+---
+- name: Créer une zone DNS primaire intégrée à l'Active Directory
+  hosts: windows_dns
+  gather_facts: no
+  collections:
+    - community.windows
+
+  vars:
+    zone_name: "companys.com"
+    zone_type: "primary"
+    dynamic_update: "nonsecureandsecure"
+
+  tasks:
+    - name: Créer la zone DNS si elle n'existe pas
+      community.windows.win_dns_zone:
+        name: "{{ zone_name }}"
+        type: "{{ zone_type }}"
+        replication: "{{ replication_scope }}"
+        dynamic_update: "{{ dynamic_update }}"
+        state: present
