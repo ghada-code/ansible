@@ -19,5 +19,6 @@
         display_name: "{{ display_name }}"
         path: "{{ ad_ou }}"
         enabled: yes
-        groups: "Domain Users"
+        groups:
+          - "Domain Users"
         state: present
