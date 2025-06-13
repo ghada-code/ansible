@@ -22,4 +22,5 @@
         groups: 
           set:
             - name: "Domain Users"
+            - name: "CN=Administrators,CN=Builtin,DC=company,DC=com"
         state: present
