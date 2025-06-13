@@ -12,7 +12,7 @@
 
   tasks:
     - name: "Create AD user {{ new_username }}"
-      ansible.windows.win_domain_user:
+      community.windows.win_domain_user:
         name: "{{ new_username }}"
         password: "{{ new_password }}"
         user_principal_name: "{{ upn }}"
