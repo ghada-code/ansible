@@ -2,12 +2,10 @@
   hosts: windows
   gather_facts: no
   tasks:
-    - name: Ensure domain user 'user2' exists
-      ansible.windows.win_domain_user:
-        name: user2
-        password: "P@ssw0rd123!"
-        user_principal_name: user2@site2.com
-        enabled: yes
-        groups:
-          - "Domain Users"
+    - name: Ensure user bob is present
+      ansible.windows.win_user:
+        name: bob
+        password: B0bP4ssw0rd
         state: present
+        groups:
+          - Users
