@@ -1,11 +1,23 @@
-- name: Create or update domain user 'user2'
+- name: Add user to Active Directory
   hosts: all
   gather_facts: no
+  vars:
+    new_username: "john.doe"
+    new_password: "P@ssw0rd123!"  # Must meet domain password policy
+    upn: "john.doe@site1.com"
+    ad_ou: "OU=Users,DC=company,DC=com"
+    display_name: "John Doe"
+    groups:
+      - "Domain Users"
+
   tasks:
-    - name: Ensure user bob is present
-      ansible.windows.win_user:
-        name: bob
-        password: B0bP4ssw0rd
+    - name: Create AD user {{ new_username }}
+      ansible.windows.win_domain_user:
+        name: "{{ new_username }}"
+        password: "{{ new_password }}"
+        upn: "{{ upn }}"
+        display_name: "{{ display_name }}"
+        path: "{{ ad_ou }}"
+        enabled: yes
+        groups: "{{ groups }}"
         state: present
-        groups:
-          - Users
