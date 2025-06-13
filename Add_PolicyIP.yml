@@ -1,5 +1,5 @@
 - name: Create or update domain user 'user2'
-  hosts: windows
+  hosts: all
   gather_facts: no
   tasks:
     - name: Ensure user bob is present
