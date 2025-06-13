@@ -2,9 +2,6 @@
 - name: Create an Active Directory user
   hosts: all
   gather_facts: no
-  collections:
-    - ansible.windows
-
   vars:
     new_username: user2
     new_password: "YourSecurePassword123!"
@@ -16,10 +13,11 @@
 
   tasks:
     - name: Create AD user
-      win_domain_user:
-        name: "{{ new_username }}"
+      microsoft.ad.user:
+        identity: "{{ new_username }}"
+        firstname: "{{ new_username }}"
         password: "{{ new_password }}"
-        user_principal_name: "{{ upn }}"
+        upn: "{{ upn }}"
         display_name: "{{ display_name }}"
         path: "{{ ad_ou }}"
         enabled: yes
