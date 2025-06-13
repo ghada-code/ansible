@@ -1,5 +1,5 @@
 - name: Create or update domain user 'user2'
-  hosts: all
+  hosts: windows
   gather_facts: no
   tasks:
     - name: Ensure domain user 'user2' exists
