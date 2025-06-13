@@ -2,9 +2,8 @@
   hosts: fortimail1
   gather_facts: no
   vars:
-    primary_dns: "8.8.8.8"
+    primary_dns: "192.168.111.151"
     secondary_dns: "1.1.1.1"
-    domain_name: "site1.com"
 
   tasks:
     - name: Login to FortiMail and get session cookie
@@ -29,11 +28,14 @@
     - name: Configure DNS settings on FortiMail
       uri:
         url: "https://{{ fortimail_ip }}/api/v1/SysDns"
-        method: GET
+        method: PUT
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-        return_content: yes
+          body_format: json
+        body:
+          primary: "{{ primary_dns }}"
+          secondary: "{{ secondary_dns }}"
         validate_certs: no
         status_code: 200
       register: dns_config_result
