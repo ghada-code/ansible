@@ -46,5 +46,6 @@
         body_format: json
         body:
           hostname: "{{ host }}"
+          
         validate_certs: no
         status_code: 200
