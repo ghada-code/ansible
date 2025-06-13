@@ -1,4 +1,4 @@
-- hosts: fortimail1
+- hosts: fortimailg2
   gather_facts: no
   vars:
     host: "{{ host }}"
