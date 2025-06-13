@@ -32,7 +32,7 @@
         headers:
           Cookie: "{{ fm_cookie_string }}"
           Content-Type: application/json
-          body_format: json
+        body_format: json
         body:
           primary: "{{ primary_dns }}"
           secondary: "{{ secondary_dns }}"
