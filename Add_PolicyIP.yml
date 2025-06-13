@@ -11,11 +11,11 @@
       - "Domain Users"
 
   tasks:
-    - name: Create AD user
+    - name: "Create AD user {{ new_username }}"
       ansible.windows.win_domain_user:
         name: "{{ new_username }}"
         password: "{{ new_password }}"
-        upn: "{{ upn }}"
+        user_principal_name: "{{ upn }}"
         display_name: "{{ display_name }}"
         path: "{{ ad_ou }}"
         enabled: yes
