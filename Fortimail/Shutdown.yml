@@ -1,5 +1,5 @@
 - name: FortiMail Administrative Actions (Restart, Shutdown, Reload)
-  hosts: fortimail1
+  hosts: all
   gather_facts: no
 
   vars:
