@@ -3,9 +3,9 @@
   hosts: all
   gather_facts: no
   vars:
-    new_username: user2
+    new_username: user3
     new_password: "YourSecurePassword123!"
-    upn: "user2@site1.com"
+    upn: "user3@site1.com"
     display_name: "User Two"
     ad_ou: "CN=Users,DC=company,DC=com"   # This points to the default Users containe
 
