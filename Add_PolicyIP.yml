@@ -20,5 +20,6 @@
         path: "{{ ad_ou }}"
         enabled: yes
         groups: 
-          - name: Domain Users
+          set:
+            - name: Domain Users
         state: present
