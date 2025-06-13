@@ -7,7 +7,7 @@
     new_password: "YourSecurePassword123!"
     upn: "user2@site1.com"
     display_name: "User Two"
-    ad_ou: "OU=corp,DC=company,DC=com"
+    ad_ou: "CN=Users,DC=company,DC=com"   # This points to the default Users containe
 
   tasks:
     - name: Create AD user
