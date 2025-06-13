@@ -28,7 +28,7 @@
 
     - name: Configure DNS settings on FortiMail
       uri:
-        url: "https://{{ fortimail_ip }}/api/v1/System/SysDns"
+        url: "https://{{ fortimail_ip }}/api/v1/SysDns"
         method: GET
         headers:
           Cookie: "{{ fm_cookie_string }}"
