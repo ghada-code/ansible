@@ -1,0 +1,14 @@
+- name: Supprimer une zone DNS primaire
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Supprimer la zone DNS via PowerShell si elle existe
+      win_shell: |
+        $zoneName = "companys.com"
+        $zone = Get-DnsServerZone -Name $zoneName -ErrorAction SilentlyContinue
+        if ($zone) {
+          Remove-DnsServerZone -Name $zoneName -Force
+          Write-Output "La zone DNS $zoneName a été supprimée."
+        } else {
+          Write-Output "La zone DNS $zoneName n'existe pas."
+        }
