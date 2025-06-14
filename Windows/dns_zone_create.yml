@@ -1,15 +1,15 @@
----
 - name: Créer une zone DNS primaire intégrée à l'Active Directory
   hosts: all
   gather_facts: no
   vars:
     zone_name: "companys.com"
     zone_type: "primary"
+    replication_scope: "Domain"  # <-- You were missing this variable!
     dynamic_update: "nonsecureandsecure"
 
   tasks:
     - name: Créer la zone DNS si elle n'existe pas
-      win_dns_zone:
+      ansible.windows.win_dns_zone:
         name: "{{ zone_name }}"
         type: "{{ zone_type }}"
         replication: "{{ replication_scope }}"
