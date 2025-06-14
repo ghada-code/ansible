@@ -2,9 +2,6 @@
 - name: Créer une zone DNS primaire intégrée à l'Active Directory
   hosts: all
   gather_facts: no
-  collections:
-    - community.windows
-
   vars:
     zone_name: "companys.com"
     zone_type: "primary"
@@ -12,7 +9,7 @@
 
   tasks:
     - name: Créer la zone DNS si elle n'existe pas
-      community.windows.win_dns_zone:
+      ansible.windows.win_dns_zone:
         name: "{{ zone_name }}"
         type: "{{ zone_type }}"
         replication: "{{ replication_scope }}"
