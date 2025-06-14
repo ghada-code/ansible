@@ -1,0 +1,7 @@
+- name: Shutdown Windows machine
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Shut down the Windows machine
+      win_shell: |
+        Stop-Computer -Force
