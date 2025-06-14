@@ -1,17 +1,14 @@
 - name: Créer une zone DNS primaire intégrée à l'Active Directory
   hosts: all
   gather_facts: no
-  vars:
-    zone_name: "companys.com"
-    zone_type: "primary"
-    replication_scope: "Domain"  # <-- You were missing this variable!
-    dynamic_update: "nonsecureandsecure"
-
   tasks:
-    - name: Créer la zone DNS si elle n'existe pas
-      ansible.windows.win_dns_zone:
-        name: "{{ zone_name }}"
-        type: "{{ zone_type }}"
-        replication: "{{ replication_scope }}"
-        dynamic_update: "{{ dynamic_update }}"
-        state: present
+    - name: Créer une zone DNS via PowerShell si elle n'existe pas
+      win_shell: |
+        $zoneName = "companys.com"
+        $zone = Get-DnsServerZone -Name $zoneName -ErrorAction SilentlyContinue
+        if (-not $zone) {
+          Add-DnsServerPrimaryZone -Name $zoneName -ReplicationScope "Domain" -DynamicUpdate "NonsecureAndSecure"
+        } else {
+          Write-Output "La zone DNS $zoneName existe déjà."
+        }
+
