@@ -9,7 +9,7 @@
 
   tasks:
     - name: Créer la zone DNS si elle n'existe pas
-      ansible.windows.win_dns_zone:
+      win_dns_zone:
         name: "{{ zone_name }}"
         type: "{{ zone_type }}"
         replication: "{{ replication_scope }}"
