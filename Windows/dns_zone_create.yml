@@ -1,6 +1,6 @@
 ---
 - name: Créer une zone DNS primaire intégrée à l'Active Directory
-  hosts: windows_dns
+  hosts: all
   gather_facts: no
   collections:
     - community.windows
