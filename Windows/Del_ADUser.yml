@@ -1,0 +1,22 @@
+---
+- name: Create an Active Directory user
+  hosts: all
+  gather_facts: no
+
+  vars:
+    ad_ou: "CN=Users,DC=company,DC=com"
+
+  tasks:
+    - name: Create AD user
+      microsoft.ad.user:
+        name: "{{ new_username }}"
+        firstname: "{{ new_username }}"
+        password: "{{ new_password }}"
+        upn: "{{ upn }}"
+        display_name: "{{ display_name }}"
+        path: "{{ ad_ou }}"
+        enabled: yes
+        groups:
+          set:
+            - Domain Users
+        state: absent
