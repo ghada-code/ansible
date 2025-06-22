@@ -39,7 +39,7 @@
           srcintf:
             - name: "port1"
           dstintf:
-            - name: "to_FW2"
+            - name: "TO_FW2"
           srcaddr:
             - name: "port1 address"
           dstaddr:
@@ -59,7 +59,7 @@
           policyid: 3
           name: "vpnrev"
           srcintf:
-            - name: "to_FW2"
+            - name: "TO_FW2"
           dstintf:
             - name: "port1"
           srcaddr:
