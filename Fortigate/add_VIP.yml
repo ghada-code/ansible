@@ -1,6 +1,6 @@
 ---
 - name: Configurer des VIPs FortiGate
-  hosts: fortigate1
+  hosts: fortigate2
   connection: httpapi
   gather_facts: no
   collections:
