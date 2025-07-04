@@ -59,7 +59,7 @@
           policyid: 3
           name: "vpnrev"
           srcintf:
-            - name: "TO_FW3"
+            - name: "to_FW3"
           dstintf:
             - name: "port2"
           srcaddr:
