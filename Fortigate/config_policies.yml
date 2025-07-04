@@ -37,13 +37,13 @@
           policyid: 2
           name: "VPN1"
           srcintf:
-            - name: "port1"
+            - name: "port2"
           dstintf:
             - name: "to_FW3"
           srcaddr:
-            - name: "port2 address"
+            - name: "port"
           dstaddr:
-            - name: "Site3"
+            - name: "site2"
           action: "accept"
           schedule: "always"
           service:
@@ -63,9 +63,9 @@
           dstintf:
             - name: "port2"
           srcaddr:
-            - name: "Site3"
+            - name: "site2"
           dstaddr:
-            - name: "port2 address"
+            - name: "port"
           action: "accept"
           schedule: "always"
           service:
