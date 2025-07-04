@@ -39,7 +39,7 @@
           srcintf:
             - name: "port1"
           dstintf:
-            - name: "TO_FW3"
+            - name: "to_FW3"
           srcaddr:
             - name: "port2 address"
           dstaddr:
