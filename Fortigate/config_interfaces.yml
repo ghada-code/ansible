@@ -1,39 +1,10 @@
-- name: Configurer les interfaces FortiGate
-  hosts: fortigate1
+- name: Vérifier que FortiGate répond bien
+  hosts: fortigate3
   gather_facts: no
   connection: httpapi
 
-  collections:
-    - fortinet.fortios
   tasks:
-    - name: Configurer interface port2
-      fortios_system_interface:
-        state: "present"
-        access_token: "{{ fortios_access_token }}" 
-        system_interface:
-          name: "port2"
-          ip: "172.29.3.1 255.255.255.0"
-          allowaccess: ["ping","https","ssh","http","fgfm"]
-          type: "physical"
-          alias: "Site3"
-          device_identification: "enable"
-          lldp_transmission: "enable"
-          role: "lan"
-          snmp_index: 1
-          status: "up"
-    - name: Configurer interface port1
-      fortios_system_interface:
-        state: "present"
-        access_token: "{{ fortios_access_token }}" 
-        system_interface:
-          name: "port1"
-          mode: "dhcp"
-          allowaccess: ["ping","https","ssh","http","fgfm"]
-          type: "physical"
-          alias: "wan"
-          device_identification: "enable"
-          lldp_transmission: "enable"
-          role: "wan"
-          snmp_index: 2
-          status: "up"
-
+    - name: Obtenir le status du système
+      fortinet.fortios.fortios_monitor_system_status:
+        vdom: root
+        access_token: "{{ fortios_access_token }}"
