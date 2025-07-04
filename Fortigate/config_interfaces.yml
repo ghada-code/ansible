@@ -1,5 +1,5 @@
 - name: Configurer les interfaces FortiGate
-  hosts: fortigate1
+  hosts: fortigate3
   gather_facts: no
   connection: httpapi
 
