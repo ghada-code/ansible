@@ -1,5 +1,5 @@
 - name: Configurer les politiques firewall FortiGate
-  hosts: fortigate1
+  hosts: fortigate3
   gather_facts: no
   connection: httpapi
 
@@ -14,9 +14,9 @@
           policyid: 1
           name: "ALLOW_NET"
           srcintf:
-            - name: "port1"
-          dstintf:
             - name: "port2"
+          dstintf:
+            - name: "port1"
           srcaddr:
             - name: "all"
           dstaddr:
@@ -39,11 +39,11 @@
           srcintf:
             - name: "port1"
           dstintf:
-            - name: "TO_FW2"
+            - name: "TO_FW3"
           srcaddr:
-            - name: "port1 address"
+            - name: "port2 address"
           dstaddr:
-            - name: "Site2"
+            - name: "Site3"
           action: "accept"
           schedule: "always"
           service:
@@ -59,13 +59,13 @@
           policyid: 3
           name: "vpnrev"
           srcintf:
-            - name: "TO_FW2"
+            - name: "TO_FW3"
           dstintf:
-            - name: "port1"
+            - name: "port2"
           srcaddr:
-            - name: "Site2"
+            - name: "Site3"
           dstaddr:
-            - name: "port1 address"
+            - name: "port2 address"
           action: "accept"
           schedule: "always"
           service:
@@ -81,9 +81,9 @@
           policyid: 4
           name: "dnat"
           srcintf:
-            - name: "port3"
-          dstintf:
             - name: "port1"
+          dstintf:
+            - name: "port2"
           srcaddr:
             - name: "all"
           dstaddr:
