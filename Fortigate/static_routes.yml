@@ -1,6 +1,6 @@
 ---
 - name: Configurer des routes statiques FortiGate
-  hosts: fortigate1
+  hosts: fortigate3
   connection: httpapi
   gather_facts: no
   collections:
@@ -14,7 +14,7 @@
         router_static:
           seq_num: "1"
           dst: "172.29.2.0 255.255.255.0"
-          device: "to_FW2"
+          device: "to_FW3"
     - name: Route statique 2
       fortios_router_static:
         access_token: "{{ fortios_access_token }}" 
@@ -22,5 +22,5 @@
         router_static:
           seq_num: "2"
           dst: "0.0.0.0 0.0.0.0"
-          gateway: "20.20.20.1"
-          device: "port3"
+          gateway: "192.168.111.120"
+          device: "port1"
