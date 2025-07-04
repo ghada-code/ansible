@@ -1,6 +1,6 @@
 ---
 - name: Configurer des VIPs FortiGate
-  hosts: fortigate2
+  hosts: fortigate3
   connection: httpapi
   gather_facts: no
   collections:
@@ -13,8 +13,8 @@
         state: "present"
         firewall_vip:
           name: "mail"
-          extip: "20.21.21.4"
+          extip: "192.168.111.120"
           mappedip:
-            - range: "172.29.2.12"
-          extintf: "port3"
+            - range: "172.29.3.12"
+          extintf: "port2"
           type: "static-nat"
