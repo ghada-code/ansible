@@ -1,5 +1,5 @@
 - name: Configure DNS on FortiMail
-  hosts: fortimail1
+  hosts: fortimail
   gather_facts: no
   vars:
     primary_dns: 192.168.111.151
