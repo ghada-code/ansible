@@ -33,7 +33,7 @@
         body_format: json
         body:
           mkey: "example.com"
-          ip: "172.29.1.10"
+          ip: "172.29.3.12"
           port: 25
           is_subdomain: false
           maindomain: "example.com"
