@@ -1,5 +1,5 @@
 - name: Manage IP Policies
-  hosts: fortimail1
+  hosts: fortimail
   gather_facts: no
   vars: 
     domain: "{{ domain }}"
