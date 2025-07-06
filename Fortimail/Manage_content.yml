@@ -1,5 +1,5 @@
 - name: Manage Content Profile in Recipient Policy
-  hosts: fortimail1
+  hosts: fortimail
   gather_facts: no
 
   vars:
