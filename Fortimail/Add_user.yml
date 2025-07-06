@@ -1,5 +1,5 @@
 - name: Add mailbox user in FortiMail (Server Mode)
-  hosts: fortimail2
+  hosts: fortimail
   gather_facts: no
   vars:
     domain: "{{ domain }}"     
