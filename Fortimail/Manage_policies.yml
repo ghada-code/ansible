@@ -53,7 +53,7 @@
         body_format: json
         body:
           comment: "IP policy via Ansible"
-          client: "172.29.1.0/24"
+          client: "172.29.3.0/24"
           server: "172.29.2.0/24"
           status: true
           antispam_profile: "spf"
