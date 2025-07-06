@@ -1,5 +1,5 @@
 - name: Manage Antispam Profile in Recipient Policy
-  hosts: fortimailg2
+  hosts: fortimail
   gather_facts: no
 
   vars:
