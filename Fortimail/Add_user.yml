@@ -2,8 +2,8 @@
   hosts: fortimail2
   gather_facts: no
   vars:
-    domain: "site1.com"       # Mail domain (must exist in FortiMail)
-    username: "john"
+    domain: "{{ domain }}"     
+    username: "{{ username }}"
     user_password: "StrongP@ssw0rd!"
   tasks:
     - name: Login to FortiMail and get session cookie
